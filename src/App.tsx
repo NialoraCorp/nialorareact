@@ -29,14 +29,10 @@ function App() {
 
   return (
     <div className="page">
-      <video
-        className="bg-video"
-        src="/bg.mp4"
-        autoPlay
-        loop
-        muted
-        playsInline
-      />
+      {/* Desktop */}
+      <video className="bg-video" src="/bg.mp4" autoPlay loop muted playsInline />
+      {/* Mobile — H.264 baseline + faststart for iOS Safari autoplay */}
+      <video className="bg-mobile" src="/bg-mobile.mp4" autoPlay loop muted playsInline />
 
       <div className="content">
         <h1 className={`tagline ${visible ? 'visible' : 'hidden'}`}>
