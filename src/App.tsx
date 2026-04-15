@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import './App.css'
 
 const phrases = [
@@ -15,6 +15,27 @@ const phrases = [
 function App() {
   const [index, setIndex] = useState(0)
   const [visible, setVisible] = useState(true)
+  const desktopRef = useRef<HTMLVideoElement>(null)
+  const mobileRef  = useRef<HTMLVideoElement>(null)
+
+  useEffect(() => {
+    const tryPlay = (v: HTMLVideoElement | null) => {
+      if (!v) return
+      v.muted = true
+      v.play().catch(() => {})
+    }
+    tryPlay(desktopRef.current)
+    tryPlay(mobileRef.current)
+
+    const onVisible = () => {
+      if (!document.hidden) {
+        tryPlay(desktopRef.current)
+        tryPlay(mobileRef.current)
+      }
+    }
+    document.addEventListener('visibilitychange', onVisible)
+    return () => document.removeEventListener('visibilitychange', onVisible)
+  }, [])
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -29,11 +50,24 @@ function App() {
 
   return (
     <div className="page">
-      {/* Desktop */}
-      <video className="bg-video" src="/bg.mp4" autoPlay loop muted playsInline />
-      {/* Mobile — H.264 baseline + faststart for iOS Safari autoplay */}
-      <video className="bg-mobile" src="/bg-mobile.mp4" autoPlay loop muted playsInline />
-
+      <video
+        ref={desktopRef}
+        className="bg-video"
+        src="/bg.mp4"
+        autoPlay
+        loop
+        muted
+        playsInline
+      />
+      <video
+        ref={mobileRef}
+        className="bg-mobile"
+        src="/bg-mobile.mp4"
+        autoPlay
+        loop
+        muted
+        playsInline
+      />
       <div className="content">
         <h1 className={`tagline ${visible ? 'visible' : 'hidden'}`}>
           {phrases[index].tagline}
