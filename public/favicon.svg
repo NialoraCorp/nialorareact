@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <defs>
+    <linearGradient id="grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#a8d8f0"/>
+      <stop offset="50%" stop-color="#c4a8e8"/>
+      <stop offset="100%" stop-color="#f0a8d8"/>
+    </linearGradient>
+  </defs>
+  <text
+    x="50%"
+    y="50%"
+    dominant-baseline="central"
+    text-anchor="middle"
+    font-family="system-ui, -apple-system, sans-serif"
+    font-size="52"
+    font-weight="300"
+    fill="url(#grad)"
+  >N</text>
+</svg>
