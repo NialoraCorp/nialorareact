@@ -22,6 +22,10 @@ function App() {
     const tryPlay = (v: HTMLVideoElement | null) => {
       if (!v) return
       v.muted = true
+      v.setAttribute('muted', '')
+      v.setAttribute('playsinline', '')
+      v.setAttribute('webkit-playsinline', '')
+      v.load()
       v.play().catch(() => {})
     }
     tryPlay(desktopRef.current)
@@ -34,7 +38,17 @@ function App() {
       }
     }
     document.addEventListener('visibilitychange', onVisible)
-    return () => document.removeEventListener('visibilitychange', onVisible)
+
+    // Bazı tarayıcılar ilk dokunuşta oynatılmasına izin veriyor
+    const onTouch = () => {
+      tryPlay(desktopRef.current)
+      tryPlay(mobileRef.current)
+    }
+    document.addEventListener('touchstart', onTouch, { once: true })
+
+    return () => {
+      document.removeEventListener('visibilitychange', onVisible)
+    }
   }, [])
 
   useEffect(() => {
