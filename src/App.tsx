@@ -15,8 +15,8 @@ const phrases = [
 function App() {
   const [index, setIndex] = useState(0)
   const [visible, setVisible] = useState(true)
-  const desktopRef = useRef<HTMLVideoElement>(null)
-  const mobileRef  = useRef<HTMLVideoElement>(null)
+  const blurRef  = useRef<HTMLVideoElement>(null)
+  const mainRef  = useRef<HTMLVideoElement>(null)
 
   useEffect(() => {
     const tryPlay = (v: HTMLVideoElement | null) => {
@@ -28,27 +28,22 @@ function App() {
       v.load()
       v.play().catch(() => {})
     }
-    tryPlay(desktopRef.current)
-    tryPlay(mobileRef.current)
+    tryPlay(blurRef.current)
+    tryPlay(mainRef.current)
 
     const onVisible = () => {
       if (!document.hidden) {
-        tryPlay(desktopRef.current)
-        tryPlay(mobileRef.current)
+        tryPlay(blurRef.current)
+        tryPlay(mainRef.current)
       }
     }
     document.addEventListener('visibilitychange', onVisible)
+    document.addEventListener('touchstart', () => {
+      tryPlay(blurRef.current)
+      tryPlay(mainRef.current)
+    }, { once: true })
 
-    // Bazı tarayıcılar ilk dokunuşta oynatılmasına izin veriyor
-    const onTouch = () => {
-      tryPlay(desktopRef.current)
-      tryPlay(mobileRef.current)
-    }
-    document.addEventListener('touchstart', onTouch, { once: true })
-
-    return () => {
-      document.removeEventListener('visibilitychange', onVisible)
-    }
+    return () => document.removeEventListener('visibilitychange', onVisible)
   }, [])
 
   useEffect(() => {
@@ -64,24 +59,11 @@ function App() {
 
   return (
     <div className="page">
-      <video
-        ref={desktopRef}
-        className="bg-video"
-        src="/bg.mp4"
-        autoPlay
-        loop
-        muted
-        playsInline
-      />
-      <video
-        ref={mobileRef}
-        className="bg-mobile"
-        src="/bg-new.mp4"
-        autoPlay
-        loop
-        muted
-        playsInline
-      />
+      {/* Yanlar için bulanık arka plan */}
+      <video ref={blurRef}  className="bg-blur" src="/bg-new.mp4" autoPlay loop muted playsInline />
+      {/* Ortalanmış ana video */}
+      <video ref={mainRef}  className="bg-main" src="/bg-new.mp4" autoPlay loop muted playsInline />
+
       <div className="content">
         <h1 className={`tagline ${visible ? 'visible' : 'hidden'}`}>
           {phrases[index].tagline}

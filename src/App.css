@@ -8,31 +8,40 @@
   background: #000;
 }
 
-.bg-video {
-  display: block;
+/* Yanlar için bulanık arka plan — tam ekranı kaplar */
+.bg-blur {
   position: absolute;
   inset: 0;
   width: 100%;
   height: 100%;
   object-fit: cover;
+  filter: blur(24px) brightness(0.75);
+  transform: scale(1.08);
   z-index: 0;
 }
 
-.bg-mobile {
-  display: none;
+/* Ortalanmış portre video */
+.bg-main {
   position: absolute;
-  inset: 0;
-  width: 100%;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
   height: 100%;
-  object-fit: cover;
-  z-index: 0;
+  width: auto;
+  z-index: 1;
 }
 
+/* Mobilde tam ekran kaplasın */
 @media (max-width: 768px) {
-  .bg-video  { display: none; }
-  .bg-mobile { display: block; }
+  .bg-blur { display: none; }
+  .bg-main {
+    left: 0;
+    transform: none;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
 }
-
 
 .content {
   position: relative;
