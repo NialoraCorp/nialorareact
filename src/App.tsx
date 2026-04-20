@@ -76,7 +76,7 @@ function App() {
       <video
         ref={mobileRef}
         className="bg-mobile"
-        src="/bg-mobile.mp4"
+        src="/bg-new.mp4"
         autoPlay
         loop
         muted
