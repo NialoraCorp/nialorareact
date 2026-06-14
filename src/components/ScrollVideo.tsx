@@ -156,6 +156,7 @@ export default function ScrollVideo({ images, ready, pinVh = 440 }: Props) {
   return (
     <div className="sv-wrap" ref={wrapRef} style={{ height: `${pin}vh` }} id="hero">
       <div className="sv-stage">
+        <h1 className="visually-hidden">{t.hero.h1}</h1>
         <canvas ref={bgRef} className="sv-bg" aria-hidden />
         <canvas ref={mainRef} className="sv-main" role="img" aria-label={t.hero.alt} />
         <div className="sv-vignette" aria-hidden />

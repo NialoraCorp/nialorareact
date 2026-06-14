@@ -17,7 +17,10 @@ export function detectLang(): Lang {
 
 /* ───────────────────────── Sözlük (TR) ───────────────────────── */
 const tr = {
-  meta: { title: 'Nialora, İmza Formül' },
+  meta: {
+    title: "Nialora - Niacinamide'li Beyazlatıcı Premium Diş Macunu",
+    description: 'Nialora, niacinamide ile güçlendirilmiş premium beyazlatıcı diş macunu. Mineyi korur, dişleri nazikçe beyazlatır ve uzun süren tazelik sunar. SLS ve paraben içermez.',
+  },
   loader: { eyebrow: 'PREMİUM DİŞ BAKIMI' },
   nav: {
     links: [
@@ -35,7 +38,8 @@ const tr = {
       { eyebrow: 'SONUÇ', t: 'Beyazlatır · Korur · Parlatır.' },
     ],
     cue: 'KAYDIRIN',
-    alt: 'Nialora diş macunu',
+    alt: 'Nialora beyazlatıcı premium diş macunu, niacinamide ile',
+    h1: 'Nialora Beyazlatıcı Premium Diş Macunu, Niacinamide ile Güçlendirilmiş',
   },
   manifesto: {
     eyebrow: 'Felsefe',
@@ -74,7 +78,7 @@ const tr = {
       { k: '03', t: 'Gece', d: 'Günü kapatan besleyici ritüel; niacinamide gece boyu çalışsın.' },
     ],
   },
-  marquee: ['NIACINAMIDE', 'NAZİK BEYAZLATMA', 'MİNE KORUMA', 'SLS YOK', 'ZALİMSİZ', 'İMZA FORMÜL'],
+  marquee: ['NIACINAMIDE', 'NAZİK BEYAZLATMA', 'MİNE KORUMA', 'SLS YOK', 'İMZA FORMÜL'],
   coming: {
     eyebrow: 'Özel Ön Kayıt',
     h: 'Çok Yakında.',
@@ -101,7 +105,10 @@ export type Dict = typeof tr
 
 /* ───────────────────────── Dictionary (EN) ───────────────────────── */
 const en: Dict = {
-  meta: { title: 'Nialora, Signature Formula' },
+  meta: {
+    title: 'Nialora - Niacinamide Whitening Premium Toothpaste',
+    description: 'Nialora is a premium whitening toothpaste powered by niacinamide. It protects enamel, gently whitens teeth and delivers long-lasting freshness. SLS and paraben free.',
+  },
   loader: { eyebrow: 'PREMIUM DENTAL CARE' },
   nav: {
     links: [
@@ -119,7 +126,8 @@ const en: Dict = {
       { eyebrow: 'THE RESULT', t: 'Whitens · Protects · Brightens.' },
     ],
     cue: 'SCROLL',
-    alt: 'Nialora toothpaste',
+    alt: 'Nialora whitening premium toothpaste, with niacinamide',
+    h1: 'Nialora Whitening Premium Toothpaste, Powered by Niacinamide',
   },
   manifesto: {
     eyebrow: 'Philosophy',
@@ -158,7 +166,7 @@ const en: Dict = {
       { k: '03', t: 'Night', d: 'A nourishing ritual to close the day; let niacinamide work overnight.' },
     ],
   },
-  marquee: ['NIACINAMIDE', 'GENTLE WHITENING', 'ENAMEL CARE', 'NO SLS', 'CRUELTY-FREE', 'SIGNATURE FORMULA'],
+  marquee: ['NIACINAMIDE', 'GENTLE WHITENING', 'ENAMEL CARE', 'NO SLS', 'SIGNATURE FORMULA'],
   coming: {
     eyebrow: 'Early Access',
     h: 'Coming Soon.',
@@ -201,8 +209,19 @@ export function I18nProvider({ children }: { children: ReactNode }) {
   }, [])
 
   useEffect(() => {
+    const d = translations[lang]
     document.documentElement.lang = lang
-    document.title = translations[lang].meta.title
+    document.title = d.meta.title
+    const set = (selector: string, content: string) => {
+      const el = document.querySelector(selector)
+      if (el) el.setAttribute('content', content)
+    }
+    set('meta[name="description"]', d.meta.description)
+    set('meta[property="og:title"]', d.meta.title)
+    set('meta[property="og:description"]', d.meta.description)
+    set('meta[name="twitter:title"]', d.meta.title)
+    set('meta[name="twitter:description"]', d.meta.description)
+    set('meta[property="og:locale"]', lang === 'tr' ? 'tr_TR' : 'en_US')
   }, [lang])
 
   return (

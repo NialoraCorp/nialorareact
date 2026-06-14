@@ -12,7 +12,7 @@ export default function Loader({ progress, done }: Props) {
     <div className={`loader ${done ? 'loader--gone' : ''}`} aria-hidden={done}>
       <div className="loader-inner">
         <span className="loader-eyebrow">{t.loader.eyebrow}</span>
-        <h1 className="loader-mark">NIALORA</h1>
+        <div className="loader-mark">NIALORA</div>
         <div className="loader-bar">
           <i style={{ transform: `scaleX(${progress})` }} />
         </div>
