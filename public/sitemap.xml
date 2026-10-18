@@ -3,11 +3,12 @@
         xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
   <url>
     <loc>https://nialora.com/</loc>
+    <lastmod>2026-10-18</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
     <image:image>
       <image:loc>https://nialora.com/og-image.jpg</image:loc>
-      <image:title>Nialora Signature Formula Beyazlatıcı Diş Macunu</image:title>
+      <image:title>NIALORA Niasinamid İçeren Diş Macunu</image:title>
     </image:image>
   </url>
 </urlset>

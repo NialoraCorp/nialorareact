@@ -1,197 +1,283 @@
-import { createContext, useCallback, useContext, useEffect, useState, type ReactNode } from 'react'
+import { Fragment, createContext, useCallback, useContext, useEffect, useLayoutEffect, useState, type ReactNode } from 'react'
 
 export type Lang = 'tr' | 'en'
 
+export interface Stat { v: number; pre?: string; suf?: string; decimals?: number; label: string }
+export interface FaqItem { q: string; a?: string; list?: string[]; inci?: boolean }
+
 const STORAGE_KEY = 'nialora-lang'
 
-/** Cihaz dili Türkçe ise 'tr', değilse 'en'. Kayıtlı tercih varsa o önceliklidir. */
-export function detectLang(): Lang {
+/** Kayıtlı tercih varsa o; yoksa cihaz dili Türkçe ise 'tr', değilse 'en'. */
+function detectLang(): Lang {
   try {
     const stored = localStorage.getItem(STORAGE_KEY)
     if (stored === 'tr' || stored === 'en') return stored
-  } catch { /* localStorage erişilemezse yoksay */ }
+  } catch { /* localStorage kapalıysa yoksay */ }
   if (typeof navigator === 'undefined') return 'en'
   const primary = (navigator.languages && navigator.languages[0]) || navigator.language || 'en'
   return primary.toLowerCase().startsWith('tr') ? 'tr' : 'en'
 }
 
-/* ───────────────────────── Sözlük (TR) ───────────────────────── */
+/* ═══════════════════════════ Sözlük (TR) ═══════════════════════════
+   İddia kuralları: "beyazlatıcı", "çürüğe karşı", "klinik test", "premium
+   formül", "SLS içermez", "alkol içermez", "onaylı", rakip adı, "mucize",
+   "en iyi" KULLANILMAZ. (Ürün Bilgi Dokümanı, Ekim 2026)
+   "*kelime*" → italik serif vurgu.
+══════════════════════════════════════════════════════════════════════ */
 const tr = {
   meta: {
-    title: "Nialora - Niacinamide'li Beyazlatıcı Premium Diş Macunu",
-    description: 'Nialora, niacinamide ile güçlendirilmiş premium beyazlatıcı diş macunu. Mineyi korur, dişleri nazikçe beyazlatır ve uzun süren tazelik sunar. SLS ve paraben içermez.',
+    title: 'NIALORA — Niasinamid İçeren Diş Macunu · 100 g',
+    description:
+      'NIALORA, niasinamid içeren çift fazlı diş macunu. Turkuaz ve pembe iki faz, florürlü formül, nane ferahlığı ve ışıltılı jel görünümü. 100 g. Eczanelerde ve Trendyol\'da.',
   },
-  loader: { eyebrow: 'PREMİUM DİŞ BAKIMI' },
+  a11y: { skip: 'İçeriğe atla', lang: 'Dil', menu: 'Menü', close: 'Kapat', scrollTop: 'Başa dön' },
+  loader: { eyebrow: 'Niasinamid içeren diş macunu' },
   nav: {
+    menu: 'Menü',
+    close: 'Kapat',
+    buy: 'Satın Al',
     links: [
-      { href: '#felsefe', label: 'Felsefe' },
-      { href: '#formul', label: 'Formül' },
-      { href: '#icerik', label: 'İçerik' },
-      { href: '#rituel', label: 'Ritüel' },
+      { href: '#sahne', label: 'Başlangıç' },
+      { href: '#hikaye', label: 'Hikaye' },
+      { href: '#niasinamid', label: 'Niasinamid' },
+      { href: '#film', label: 'Film' },
+      { href: '#satin-al', label: 'Satın Al' },
+      { href: '#sss', label: 'Sıkça Sorulanlar' },
     ],
-    cta: 'Davet İste',
+    trendyol: 'Trendyol\'da Satın Al',
   },
-  hero: {
-    phrases: [
-      { eyebrow: 'İMZA FORMÜL', t: 'Pırıltı, artık bakımın bir parçası.' },
-      { eyebrow: 'YILDIZ İÇERİK', t: 'Niacinamide ile güçlendirildi.' },
-      { eyebrow: 'SONUÇ', t: 'Beyazlatır · Korur · Parlatır.' },
+  stage: {
+    seo: 'NIALORA niasinamid içeren diş macunu, 100 g.',
+    ch1: { line: 'Cildine gösterdiğin özeni *gülüşüne* de göster.', sub: 'Rutininizin unutulan adımı.' },
+    ch2: { tag: 'Turkuaz faz', line: 'Güne *ferah* bir başlangıç.' },
+    ch3: { tag: 'Pembe faz', line: '*Tatlı* bir kapanış.' },
+    ch4: { line: 'İkisi aynı tüpte yaşıyor ama birbirine karışmıyor.', sub: 'Bu konuda bizden daha *disiplinliler.*' },
+    cue: 'Kaydırın',
+    alt: 'NIALORA niasinamid içeren diş macunu, altın kapaklı pembe-turkuaz tüp',
+  },
+  lineup: {
+    line: 'Bakım rafınıza yakışan *ilk* diş macunu.',
+    caption: 'Niasinamid · 100 g',
+    alt: 'NIALORA koleksiyonu: koni, ön yüz ve arka yüz, pembe podyumda',
+  },
+  story: {
+    eyebrow: 'Her sabah, ışıltılı bir ritüel',
+    alt: 'NIALORA tüpü pembe zeminde inciler arasında',
+    lines: [
+      'Yıllarca cildimize özen gösterdik.',
+      'Gülüşümüz hâlâ sıradan bir tüple idare ediyordu.',
+      'Niasinamidi diş macununa taşıdık.',
     ],
-    cue: 'KAYDIRIN',
-    alt: 'Nialora beyazlatıcı premium diş macunu, niacinamide ile',
-    h1: 'Nialora Beyazlatıcı Premium Diş Macunu, Niacinamide ile Güçlendirilmiş',
+    signature: 'Cildine gösterdiğin özeni gülüşüne de göster.',
   },
-  manifesto: {
-    eyebrow: 'Felsefe',
-    h: { pre: 'Bakım bir ayrıcalıktır. ', em: 'Her sabah, her gece', post: ' tekrarlanan sessiz bir tören.' },
-    lead: 'Nialora, gündelik diş bakımını zamansız bir lüks ritüele dönüştürür. İnce işçilik, saf içerik ve ölçülü zarafet, pırıltısı yalnızca tüpünde değil gülümsemenizde de saklı.',
-  },
-  showcase: {
-    eyebrow: 'İmza Formül',
-    title: 'İmza Formül',
-    lead: 'Üç vaat, tek bir tüpte buluşuyor. Gösterişten değil, içerikten gelen bir lüks.',
-    alt: 'Nialora tüpü, spot ışığı altında',
-    pillars: [
-      { k: '01', t: 'Niacinamide Bakımı', d: 'Diş etini yatıştıran, mineye besleyici bir dokunuş bırakan yıldız içerik.' },
-      { k: '02', t: 'Nazik Beyazlatma', d: 'Aşındırmadan, gün gün aydınlanan doğal ve zarif bir parlaklık.' },
-      { k: '03', t: 'Mine & Tazelik', d: 'Pürüzsüz, güçlü bir yüzey ve saatler boyu süren ferah bir nefes.' },
+  niacinamide: {
+    tag: 'Niasinamid · %0,5',
+    line: 'Cilt bakımından tanıdığınız *B3 vitamini*, şimdi diş macununda.',
+    why: [
+      { t: 'Niasinamid', d: 'Markanın imza bileşeni.' },
+      { t: 'Florürlü', d: 'Günlük ağız bakımı. Nane aromalı.' },
+      { t: 'Ferah nefes', d: 'Mentol ve uzun süren serinlik.' },
+      { t: 'Temiz dişler', d: 'Temizleyerek daha parlak görünüm.' },
     ],
+    ticker: ['%0,5 niasinamid', '%0,22 sodyum florür', 'nane ferahlığı', 'mika & kalay oksit ışıltısı', 'çift fazlı formül', '100 g', 'ilk üretim · sınırlı sayıda'],
   },
-  science: {
-    eyebrow: 'Ana İçerik',
-    h: { pre: 'Yıldız içerik: ', em: 'Niacinamide', post: '' },
-    lead: 'Cilt bakımının sevilen B3 vitamini, şimdi ağız bakımında. Niacinamide diş etini yatıştırır, mineyi destekler ve gülümsemenize sağlıklı bir aydınlık katar, saf su mavisi ve gül tonlarıyla harmanlanmış imza dokumuzun içinde.',
-    alt: 'Nialora tüpü, içinde parıldayan takımyıldız dokusu',
-    stats: [
-      { n: 14, pre: '', suf: ' GÜN', label: 'gözle görülür parlaklık*' },
-      { n: 0, pre: '%', suf: '', label: 'SLS · Paraben · Mikroplastik' },
-      { n: 24, pre: '', suf: ' SAAT', label: 'uzun süren tazelik' },
-    ],
-    footnote: '*Düzenli kullanımda marka değerlendirmesidir; tıbbi bir iddia içermez.',
+  film: {
+    line: 'Ferahlığın en *zarif* hali.',
+    reels: 'Kısa filmler',
+    reelsHint: 'Üzerine gelin, oynasın',
+    unmute: 'Sesi aç',
+    mute: 'Sesi kapat',
+    play: 'Oynat',
+    pause: 'Durdur',
   },
-  ritual: {
-    eyebrow: 'Ritüel',
-    h: { pre: 'Üç anlık bir ', em: 'tören', post: '.' },
-    steps: [
-      { k: '01', t: 'Sabah', d: 'Güne pırıltıyla başlayın. Mineyi uyandıran nazik bir aydınlık.' },
-      { k: '02', t: 'Gün', d: 'Kısa bir tazeleme. Çantanızda taşıyabileceğiniz zarif bir mola.' },
-      { k: '03', t: 'Gece', d: 'Günü kapatan besleyici ritüel; niacinamide gece boyu çalışsın.' },
-    ],
+  buy: {
+    line: 'Seçili eczanelerde ve *Trendyol\'da.*',
+    sub: 'İlk üretim, sınırlı sayıda. Hediye kutusuyla.',
+    product: 'NIALORA Niasinamid İçeren Diş Macunu · 100 g · Nane · Florürlü',
+    trendyol: 'Trendyol\'da Satın Al',
+    pharmacy: 'Eczanelerde tezgah standında. Market rafında ve indirim sitelerinde değil.',
+    alt: 'NIALORA tüpünün ön yüzü, altın etiket',
   },
-  marquee: ['NIACINAMIDE', 'NAZİK BEYAZLATMA', 'MİNE KORUMA', 'SLS YOK', 'İMZA FORMÜL'],
-  coming: {
-    eyebrow: 'Özel Ön Kayıt',
-    h: 'Çok Yakında.',
-    lead: 'Lansmana özel davet listesine katılın. İlk koleksiyon sınırlı sayıda üretiliyor.',
-    placeholder: 'E-posta adresiniz',
-    button: 'Davet İste',
-    done: 'Teşekkürler, listedesiniz. Lansman haberini ilk siz alacaksınız.',
+  faq: {
+    title: 'Sıkça *sorulanlar.*',
+    items: [
+      {
+        q: 'Nasıl kullanılır?',
+        a: 'Dişlerinizi günde en az iki kez, tercihen sabah ve akşam, yaklaşık 2 dakika fırçalayınız. Bezelye büyüklüğünde macun yeterlidir. Fırçaladıktan sonra tükürünüz, yutmayınız.',
+      },
+      {
+        q: 'Uyarılar',
+        list: [
+          'Sodyum florür içerir.',
+          '6 yaş ve altı çocuklarda bezelye büyüklüğünde ve yetişkin gözetiminde kullanılır.',
+          'Başka kaynaklardan florür alınıyorsa diş hekimine danışınız.',
+          'Gözle temasından kaçınınız; temas halinde bol suyla yıkayınız.',
+          'Tahriş oluşursa kullanımı bırakınız.',
+          'Formaldehit salıcı madde içerir.',
+          'Çocukların ulaşamayacağı yerde saklayınız.',
+        ],
+      },
+      {
+        q: 'Saklama',
+        a: 'Serin ve kuru yerde, doğrudan güneş ışığından uzak saklayınız. Kullandıktan sonra kapağı kapatınız. Raf ömrü 36 aydır; parti numarası ve son kullanma tarihi kutunun altındadır.',
+      },
+      {
+        q: 'İçindekiler (INCI)',
+        inci: true,
+      },
+      {
+        q: 'Nerede satılır?',
+        a: 'Seçili eczanelerde tezgah standında ve Trendyol\'da. Market rafında ve indirim sitelerinde değil.',
+      },
+      {
+        q: 'Kim üretiyor?',
+        a: 'NIALORA, Alvion Sağlık Ürünleri ve Bilişim Teknolojileri San. Tic. Ltd. Şti. markasıdır. Türkiye\'de üretilir. Tek parti, sınırlı sayıda ilk üretim.',
+      },
+    ] as FaqItem[],
   },
   footer: {
-    tag: 'Premium diş bakımı.',
-    links: [
-      { href: '#felsefe', label: 'Felsefe' },
-      { href: '#formul', label: 'Formül' },
-      { href: '#icerik', label: 'İçerik' },
-      { href: '#rituel', label: 'Ritüel' },
-      { href: '#kayit', label: 'Kayıt' },
+    line: 'Gülüşünüz de *özen* ister.',
+    tag: 'Niasinamid içeren diş macunu',
+    social: [
+      { label: 'Instagram', href: '#' },
+      { label: 'TikTok', href: '#' },
     ],
-    rights: '© 2026 Nialora. Tüm hakları saklıdır.',
+    legal: '© 2026 Alvion Sağlık Ürünleri ve Bilişim Teknolojileri San. Tic. Ltd. Şti.',
+    made: 'Türkiye\'de üretilmiştir.',
     note: 'Özenle tasarlandı.',
   },
 }
 
 export type Dict = typeof tr
 
-/* ───────────────────────── Dictionary (EN) ───────────────────────── */
+/* ═══════════════════════════ Dictionary (EN) ═══════════════════════════ */
 const en: Dict = {
   meta: {
-    title: 'Nialora - Niacinamide Whitening Premium Toothpaste',
-    description: 'Nialora is a premium whitening toothpaste powered by niacinamide. It protects enamel, gently whitens teeth and delivers long-lasting freshness. SLS and paraben free.',
+    title: 'NIALORA — Niacinamide Toothpaste · 100 g',
+    description:
+      'NIALORA is a dual-phase toothpaste with niacinamide. Turquoise and pink phases, fluoride formula, mint freshness and a shimmering gel look. 100 g. In pharmacies and on Trendyol.',
   },
-  loader: { eyebrow: 'PREMIUM DENTAL CARE' },
+  a11y: { skip: 'Skip to content', lang: 'Language', menu: 'Menu', close: 'Close', scrollTop: 'Back to top' },
+  loader: { eyebrow: 'Niacinamide toothpaste' },
   nav: {
+    menu: 'Menu',
+    close: 'Close',
+    buy: 'Buy',
     links: [
-      { href: '#felsefe', label: 'Philosophy' },
-      { href: '#formul', label: 'Formula' },
-      { href: '#icerik', label: 'Ingredient' },
-      { href: '#rituel', label: 'Ritual' },
+      { href: '#sahne', label: 'Start' },
+      { href: '#hikaye', label: 'Story' },
+      { href: '#niasinamid', label: 'Niacinamide' },
+      { href: '#film', label: 'Film' },
+      { href: '#satin-al', label: 'Buy' },
+      { href: '#sss', label: 'FAQ' },
     ],
-    cta: 'Request Invite',
+    trendyol: 'Buy on Trendyol',
   },
-  hero: {
-    phrases: [
-      { eyebrow: 'SIGNATURE FORMULA', t: 'Shine is now part of your care.' },
-      { eyebrow: 'STAR INGREDIENT', t: 'Powered by niacinamide.' },
-      { eyebrow: 'THE RESULT', t: 'Whitens · Protects · Brightens.' },
+  stage: {
+    seo: 'NIALORA niacinamide toothpaste, 100 g.',
+    ch1: { line: 'Show your *smile* the care you show your skin.', sub: 'The forgotten step of your routine.' },
+    ch2: { tag: 'Turquoise phase', line: 'A *fresh* start to the day.' },
+    ch3: { tag: 'Pink phase', line: 'A *sweet* finish.' },
+    ch4: { line: 'They live in the same tube but never mix.', sub: 'On that matter, they are more *disciplined* than we are.' },
+    cue: 'Scroll',
+    alt: 'NIALORA niacinamide toothpaste, gold-capped pink and turquoise tube',
+  },
+  lineup: {
+    line: 'The *first* toothpaste that belongs on your skincare shelf.',
+    caption: 'Niacinamide · 100 g',
+    alt: 'The NIALORA collection: cone, front and back, on a pink podium',
+  },
+  story: {
+    eyebrow: 'Every morning, a shimmering ritual',
+    alt: 'NIALORA tube on a pink backdrop among pearls',
+    lines: [
+      'For years we cared for our skin.',
+      'Our smile was still making do with an ordinary tube.',
+      'So we brought niacinamide into toothpaste.',
     ],
-    cue: 'SCROLL',
-    alt: 'Nialora whitening premium toothpaste, with niacinamide',
-    h1: 'Nialora Whitening Premium Toothpaste, Powered by Niacinamide',
+    signature: 'Show your smile the care you show your skin.',
   },
-  manifesto: {
-    eyebrow: 'Philosophy',
-    h: { pre: 'Care is a privilege. A silent ritual repeated ', em: 'every morning, every night', post: '.' },
-    lead: 'Nialora turns everyday dental care into a timeless luxury ritual. Fine craftsmanship, pure ingredients and measured elegance, its shine lives not only in the tube but in your smile.',
-  },
-  showcase: {
-    eyebrow: 'Signature Formula',
-    title: 'The Signature Formula',
-    lead: 'Three promises, in a single tube. A luxury born of substance, not show.',
-    alt: 'Nialora tube under a spotlight',
-    pillars: [
-      { k: '01', t: 'Niacinamide Care', d: 'The star ingredient that soothes the gums and leaves a nourishing touch on enamel.' },
-      { k: '02', t: 'Gentle Whitening', d: 'A natural, refined brightness that grows day by day, without abrasion.' },
-      { k: '03', t: 'Enamel & Freshness', d: 'A smooth, strong surface and hours of lasting fresh breath.' },
+  niacinamide: {
+    tag: 'Niacinamide · 0.5%',
+    line: 'The *vitamin B3* you know from skincare, now in toothpaste.',
+    why: [
+      { t: 'Niacinamide', d: 'The signature ingredient.' },
+      { t: 'With fluoride', d: 'Daily oral care. Mint flavour.' },
+      { t: 'Fresh breath', d: 'Menthol and long-lasting coolness.' },
+      { t: 'Clean teeth', d: 'Cleans for a brighter-looking smile.' },
     ],
+    ticker: ['0.5% niacinamide', '0.22% sodium fluoride', 'mint freshness', 'mica & tin oxide shimmer', 'dual-phase formula', '100 g', 'first batch · limited'],
   },
-  science: {
-    eyebrow: 'Key Ingredient',
-    h: { pre: 'The star ingredient: ', em: 'Niacinamide', post: '' },
-    lead: "Skincare's beloved vitamin B3, now in oral care. Niacinamide soothes the gums, supports enamel and adds a healthy radiance to your smile, within our signature texture blended in pure water-blue and rose tones.",
-    alt: 'Nialora tube with a sparkling constellation texture inside',
-    stats: [
-      { n: 14, pre: '', suf: ' DAYS', label: 'visible radiance*' },
-      { n: 0, pre: '', suf: '%', label: 'SLS · Parabens · Microplastics' },
-      { n: 24, pre: '', suf: ' HOURS', label: 'long-lasting freshness' },
-    ],
-    footnote: '*A brand assessment with regular use; not a medical claim.',
+  film: {
+    line: 'The most *elegant* form of freshness.',
+    reels: 'Short films',
+    reelsHint: 'Hover to play',
+    unmute: 'Unmute',
+    mute: 'Mute',
+    play: 'Play',
+    pause: 'Pause',
   },
-  ritual: {
-    eyebrow: 'Ritual',
-    h: { pre: 'A three-moment ', em: 'ceremony', post: '.' },
-    steps: [
-      { k: '01', t: 'Morning', d: 'Begin the day with a shine. A gentle brightness that wakes the enamel.' },
-      { k: '02', t: 'Midday', d: 'A quick refresh. An elegant pause to carry in your bag.' },
-      { k: '03', t: 'Night', d: 'A nourishing ritual to close the day; let niacinamide work overnight.' },
-    ],
+  buy: {
+    line: 'In selected pharmacies and on *Trendyol.*',
+    sub: 'First batch, limited. With a gift box.',
+    product: 'NIALORA Niacinamide Toothpaste · 100 g · Mint · With fluoride',
+    trendyol: 'Buy on Trendyol',
+    pharmacy: 'On pharmacy counters. Not on supermarket shelves or discount sites.',
+    alt: 'Front of the NIALORA tube with its gold label',
   },
-  marquee: ['NIACINAMIDE', 'GENTLE WHITENING', 'ENAMEL CARE', 'NO SLS', 'SIGNATURE FORMULA'],
-  coming: {
-    eyebrow: 'Early Access',
-    h: 'Coming Soon.',
-    lead: 'Join the exclusive launch invite list. The first collection is made in limited numbers.',
-    placeholder: 'Your email address',
-    button: 'Request Invite',
-    done: "Thank you, you're on the list. You'll be the first to hear about the launch.",
+  faq: {
+    title: 'Frequently *asked.*',
+    items: [
+      {
+        q: 'How to use',
+        a: 'Brush your teeth at least twice a day, ideally morning and night, for about 2 minutes. A pea-sized amount is enough. Spit after brushing, do not swallow.',
+      },
+      {
+        q: 'Warnings',
+        list: [
+          'Contains sodium fluoride.',
+          'Children aged 6 and under: use a pea-sized amount under adult supervision.',
+          'If fluoride is taken from other sources, consult your dentist.',
+          'Avoid contact with eyes; if contact occurs, rinse with plenty of water.',
+          'Discontinue use if irritation occurs.',
+          'Contains a formaldehyde-releasing agent.',
+          'Keep out of reach of children.',
+        ],
+      },
+      {
+        q: 'Storage',
+        a: 'Store in a cool, dry place away from direct sunlight. Close the cap after use. Shelf life is 36 months; batch number and expiry date are on the bottom of the box.',
+      },
+      {
+        q: 'Ingredients (INCI)',
+        inci: true,
+      },
+      {
+        q: 'Where is it sold?',
+        a: 'On the counters of selected pharmacies and on Trendyol. Not on supermarket shelves or discount sites.',
+      },
+      {
+        q: 'Who makes it?',
+        a: 'NIALORA is a brand of Alvion Sağlık Ürünleri ve Bilişim Teknolojileri San. Tic. Ltd. Şti. Made in Türkiye. A single, limited first batch.',
+      },
+    ] as FaqItem[],
   },
   footer: {
-    tag: 'Premium dental care.',
-    links: [
-      { href: '#felsefe', label: 'Philosophy' },
-      { href: '#formul', label: 'Formula' },
-      { href: '#icerik', label: 'Ingredient' },
-      { href: '#rituel', label: 'Ritual' },
-      { href: '#kayit', label: 'Register' },
+    line: 'Your smile deserves *care* too.',
+    tag: 'Niacinamide toothpaste',
+    social: [
+      { label: 'Instagram', href: '#' },
+      { label: 'TikTok', href: '#' },
     ],
-    rights: '© 2026 Nialora. All rights reserved.',
+    legal: '© 2026 Alvion Sağlık Ürünleri ve Bilişim Teknolojileri San. Tic. Ltd. Şti.',
+    made: 'Made in Türkiye.',
     note: 'Designed with care.',
   },
 }
 
-export const translations: Record<Lang, Dict> = { tr, en }
+const translations: Record<Lang, Dict> = { tr, en }
 
-/* ───────────────────────── Context ───────────────────────── */
+/* ═══════════════════════════ Context ═══════════════════════════ */
 interface I18nValue {
   lang: Lang
   setLang: (l: Lang) => void
@@ -204,14 +290,20 @@ export function I18nProvider({ children }: { children: ReactNode }) {
   const [lang, setLangState] = useState<Lang>(detectLang)
 
   const setLang = useCallback((l: Lang) => {
+    // CSS text-transform büyük/küçük harf eşlemesini <html lang> üzerinden seçer (tr: i→İ, en: i→I).
+    // Yeni metin düğümleri oluşmadan ÖNCE dil özniteliği güncellenir; ağaç key={lang} ile yeniden kurulur.
+    document.documentElement.lang = l
     setLangState(l)
     try { localStorage.setItem(STORAGE_KEY, l) } catch { /* yoksay */ }
   }, [])
 
+  useLayoutEffect(() => {
+    document.documentElement.lang = lang
+  }, [lang])
+
   useEffect(() => {
     const d = translations[lang]
-    document.documentElement.lang = lang
-    document.title = d.meta.title
+    document.title = 'Nialora' // sekme başlığı yalnızca marka adı, bu yazımla (kullanıcı kararı)
     const set = (selector: string, content: string) => {
       const el = document.querySelector(selector)
       if (el) el.setAttribute('content', content)
@@ -226,7 +318,7 @@ export function I18nProvider({ children }: { children: ReactNode }) {
 
   return (
     <I18nContext.Provider value={{ lang, setLang, t: translations[lang] }}>
-      {children}
+      <Fragment key={lang}>{children}</Fragment>
     </I18nContext.Provider>
   )
 }
