@@ -48,6 +48,9 @@ Koddan türetilemeyen kararlar, bağlam ve açık işler. Yeni bir karar alınd�
 - Yayın sonrası: Search Console (DNS TXT ile doğrulama) + sitemap gönderimi; Instagram/TikTok adresleri gelince
   footer bağlantıları ve Organization `sameAs` eklenecek.
 
+## Kullanıcı düzeltmeleri
+- **Hediye kutusu yok** (19 Ekim 2026): PDF'teki "indirim yerine hediye kutusu" ilkesi uygulanmıyor; sitede hediye kutusundan bahsetme.
+
 ## Açık işler
 - [ ] Trendyol ürün sayfasının kesin bağlantısı (`PRODUCT.trendyolUrl` şu an marka araması).
 - [ ] Instagram / TikTok bağlantıları (`#` yer tutucu).

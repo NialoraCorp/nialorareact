@@ -92,7 +92,7 @@ const tr = {
   },
   buy: {
     line: 'Seçili eczanelerde ve *Trendyol\'da.*',
-    sub: 'İlk üretim, sınırlı sayıda. Hediye kutusuyla.',
+    sub: 'İlk üretim, sınırlı sayıda.',
     product: 'NIALORA Niasinamid İçeren Diş Macunu · 100 g · Nane · Florürlü',
     trendyol: 'Trendyol\'da Satın Al',
     pharmacy: 'Eczanelerde tezgah standında. Market rafında ve indirim sitelerinde değil.',
@@ -219,7 +219,7 @@ const en: Dict = {
   },
   buy: {
     line: 'In selected pharmacies and on *Trendyol.*',
-    sub: 'First batch, limited. With a gift box.',
+    sub: 'First batch, limited.',
     product: 'NIALORA Niacinamide Toothpaste · 100 g · Mint · With fluoride',
     trendyol: 'Buy on Trendyol',
     pharmacy: 'On pharmacy counters. Not on supermarket shelves or discount sites.',

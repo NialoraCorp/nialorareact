@@ -3,6 +3,7 @@
 Biçim: [Keep a Changelog](https://keepachangelog.com/tr/1.1.0/). Tarihler ISO (YYYY-MM-DD).
 
 ## [Unreleased]
+- Satış bölümünden "Hediye kutusuyla" ibaresi kaldırıldı (TR/EN); ürünün hediye kutusu yok.
 - SEO: FAQPage JSON-LD (6 soru, görünür SSS ile birebir), Product şemasına size/countryOfOrigin, og:type website,
   og:image:type ve twitter:image:alt, application-name/format-detection meta, sitemap lastmod; H1 görünen slogan +
   ekran okuyucuya özel ürün adı; `#` yer tutucu sosyal bağlantılar gerçek adres gelene kadar gizlendi.
