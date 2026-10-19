@@ -1,5 +1,5 @@
 import { useRef } from 'react'
-import { motion, useReducedMotion, useScroll, useSpring, useTransform, type MotionValue } from 'framer-motion'
+import { easeInOut, motion, useReducedMotion, useScroll, useSpring, useTransform, type MotionValue } from 'framer-motion'
 import { useI18n } from '@/lib/i18n'
 import { ASSETS } from '@/content/product'
 import { INTRO_DURATION, introPending } from '@/lib/intro'
@@ -14,10 +14,10 @@ import { Rich } from '@/components/ui/Rich'
    cümleler yer değiştirir, ön yüz tüp döner / kayar / büyür.
    Yalnızca transform + opacity → compositor üzerinde akıcı. */
 
-/* Tüp her bölümde yazı görünürken SABİT durur, yalnızca geçişlerde hareket eder:
-   ch1 0–0.18 · geçiş · ch2 0.30–0.48 · geçiş · ch3 0.56–0.74 · geçiş · ch4 0.84–1
-   (metin pencereleri: ch2 0.32–0.45, ch3 0.59–0.70, ch4 0.86+) */
-const K = [0, 0.18, 0.3, 0.48, 0.56, 0.74, 0.84, 1]
+/* Tüp her bölümde yazı görünürken karşı yarıda, düşeyde ortalı ve tamamı görünür; bölüm boyunca
+   hafifçe süzülür. Geçişler uzun pencerelere yayılır ve ease-in-out ile yumuşatılır:
+   ch1 0–0.14 · geçiş · ch2 0.30–0.46 · geçiş · ch3 0.58–0.72 · geçiş · ch4 0.86–1 */
+const K = [0, 0.14, 0.3, 0.46, 0.58, 0.72, 0.86, 1]
 
 /* Jeldeki minik yıldızlar: üç derinlik katmanı, scroll ile farklı hızlarda kayar,
    yalnızca ilk bölümde görünür (opacity = c1O). Deterministik dağılım. */
@@ -81,15 +81,15 @@ function StarField({ progress }: { progress: MotionValue<number> }) {
 const DESKTOP = {
   // ch1 sağ (yazı solda) · ch2 sol yarı (yazı sağda) · ch3 sağ yarı (yazı solda) · ch4 yatay, ortada
   x: ['27vw', '27vw', '-25vw', '-25vw', '24vw', '24vw', '2vw', '-4vw'],
-  y: ['8vh', '8vh', '-28vh', '-28vh', '32vh', '32vh', '18vh', '20vh'],
-  r: [-8, -8, 12, 12, -16, -16, -74, -80],
-  s: [1, 1, 1.42, 1.42, 1.44, 1.44, 1.42, 1.46],
+  y: ['8vh', '8vh', '3vh', '-3vh', '-3vh', '3vh', '18vh', '20vh'],
+  r: [-8, -8, 10, 13, -14, -11, -74, -80],
+  s: [1, 1, 1.12, 1.12, 1.12, 1.12, 1.42, 1.46],
 }
 const MOBILE = {
-  x: ['0vw', '0vw', '-6vw', '-6vw', '8vw', '8vw', '0vw', '0vw'],
-  y: ['22vh', '22vh', '-22vh', '-22vh', '30vh', '30vh', '8vh', '10vh'],
-  r: [-6, -6, 10, 10, -12, -12, -70, -76],
-  s: [1, 1, 1.22, 1.22, 1.26, 1.26, 1.3, 1.34],
+  x: ['0vw', '0vw', '-7vw', '-7vw', '8vw', '8vw', '0vw', '0vw'],
+  y: ['22vh', '22vh', '6vh', '2vh', '2vh', '6vh', '8vh', '10vh'],
+  r: [-6, -6, 8, 11, -12, -9, -70, -76],
+  s: [1, 1, 1.08, 1.08, 1.08, 1.08, 1.3, 1.34],
 }
 
 export function Stage() {
@@ -105,14 +105,14 @@ function StageInner({ mobile }: { mobile: boolean }) {
   const base = introPending() ? INTRO_DURATION - 0.55 : 0.15
 
   const { scrollYProgress } = useScroll({ target: ref, offset: ['start start', 'end end'] })
-  const p = useSpring(scrollYProgress, { stiffness: 80, damping: 26, mass: 0.5 })
+  const p = useSpring(scrollYProgress, { stiffness: 55, damping: 22, mass: 0.7 })
 
   const turqO = useTransform(p, [0.2, 0.3], [0, 1])
   const pinkO = useTransform(p, [0.45, 0.55], [0, 1])
   const goldO = useTransform(p, [0.7, 0.8], [0, 1])
 
-  const c1O = useTransform(p, [0, 0.16, 0.25], [1, 1, 0])
-  const c1Y = useTransform(p, [0, 0.25], [0, -70])
+  const c1O = useTransform(p, [0, 0.1, 0.19], [1, 1, 0]) // tüp geçişe başlamadan hero yazısı söner
+  const c1Y = useTransform(p, [0, 0.19], [0, -70])
   const c2O = useTransform(p, [0.25, 0.32, 0.45, 0.52], [0, 1, 1, 0])
   const c2Y = useTransform(p, [0.25, 0.32, 0.45, 0.52], [50, 0, 0, -50])
   const c3O = useTransform(p, [0.52, 0.59, 0.7, 0.77], [0, 1, 1, 0])
@@ -121,10 +121,11 @@ function StageInner({ mobile }: { mobile: boolean }) {
   const c4Y = useTransform(p, [0.78, 0.86], [50, 0])
 
   const kf = mobile ? MOBILE : DESKTOP
-  const x = useTransform(p, K, kf.x)
-  const y = useTransform(p, K, kf.y)
-  const rotate = useTransform(p, K, kf.r)
-  const scale = useTransform(p, K, kf.s)
+  const soft = { ease: easeInOut }
+  const x = useTransform(p, K, kf.x, soft)
+  const y = useTransform(p, K, kf.y, soft)
+  const rotate = useTransform(p, K, kf.r, soft)
+  const scale = useTransform(p, K, kf.s, soft)
 
   useSectionTheme(ref, 'light')
 

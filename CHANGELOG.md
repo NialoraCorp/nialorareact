@@ -3,8 +3,8 @@
 Biçim: [Keep a Changelog](https://keepachangelog.com/tr/1.1.0/). Tarihler ISO (YYYY-MM-DD).
 
 ## [Unreleased]
-- Sahne koreografisi: tüp her bölümde yazı görünürken sabit (turkuazda sol yarı, pembede sağ yarı), hareket
-  yalnızca geçişlerde; keyframe'ler 8 noktaya çıkarıldı, bölüm ölçeği 1.42.
+- Sahne koreografisi: tüp her bölümde yazının karşı yarısında, düşeyde ortalı ve tamamı görünür; bölüm boyunca
+  hafif süzülme, geçişler uzun pencerelerde ease-in-out ile, scroll yayı yumuşatıldı; hero yazısı geçişten önce söner.
 - Satış bölümünden "Hediye kutusuyla" ibaresi kaldırıldı (TR/EN); ürünün hediye kutusu yok.
 - SEO: FAQPage JSON-LD (6 soru, görünür SSS ile birebir), Product şemasına size/countryOfOrigin, og:type website,
   og:image:type ve twitter:image:alt, application-name/format-detection meta, sitemap lastmod; H1 görünen slogan +

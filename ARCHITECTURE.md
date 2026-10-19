@@ -56,12 +56,13 @@ public/brand/             ürün fotoğrafları, kesim (webp), film ve posterler
 | İlerleme | Zemin | Metin | Tüp (x, y, dönüş, ölçek) |
 |---|---|---|---|
 | 0.00–0.25 | ivory | Ch1 manifesto (h1) | sağda dik, −8° |
-| 0.25–0.50 | turkuaz (opacity) | Ch2 "Güne ferah bir başlangıç" | solda yukarı kaymış, +12°, 1.3× (turkuaz faz ortada) |
-| 0.50–0.75 | pembe | Ch3 "Tatlı bir kapanış" | sağda aşağı kaymış, −16°, 1.34× (pembe faz + kapak) |
+| 0.25–0.50 | turkuaz (opacity) | Ch2 "Güne ferah bir başlangıç" | sol yarıda, düşeyde ortalı, +10…13°, 1.12× |
+| 0.50–0.75 | pembe | Ch3 "Tatlı bir kapanış" | sağ yarıda, düşeyde ortalı, −14…−11°, 1.12× |
 | 0.75–1.00 | altın (#e0c57e) | Ch4 "Aynı tüpte… karışmıyor" | yatay (−74°…−80°), 1.42×, ekranı kesiyor |
 
-Keyframe'ler `DESKTOP` / `MOBILE` sabitlerinde, 8 noktalı (`K`): her bölümde tüp yazı görünürken sabit durur
-(0.30–0.48, 0.56–0.74, 0.84–1), yalnızca aralardaki geçişlerde hareket eder; kırılım değişince bileşen `key` ile yeniden kurulur.
+Keyframe'ler `DESKTOP` / `MOBILE` sabitlerinde, 8 noktalı (`K`): her bölümde tüp yazı görünürken karşı yarıda
+hafifçe süzülür (0.30–0.46, 0.58–0.72, 0.86–1), geçişler `easeInOut` ile; scroll yayı stiffness 55 / damping 22;
+kırılım değişince bileşen `key` ile yeniden kurulur.
 `StarField`: üç katman minik beş köşeli yıldız (deterministik dağılım), katman başına farklı scroll hızı
 (`y` −220/−460/−760px) ve bölüm zeminine göre `color` geçişi (ivory → turkuaz → pembe → altın paletleri);
 yıldızlar `fill: currentColor` ile katman rengini alır, yalnızca 3 motion öğesi güncellenir.
