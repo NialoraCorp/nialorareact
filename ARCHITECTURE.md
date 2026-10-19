@@ -60,7 +60,8 @@ public/brand/             ürün fotoğrafları, kesim (webp), film ve posterler
 | 0.50–0.75 | pembe | Ch3 "Tatlı bir kapanış" | sağda aşağı kaymış, −16°, 1.34× (pembe faz + kapak) |
 | 0.75–1.00 | altın (#e0c57e) | Ch4 "Aynı tüpte… karışmıyor" | yatay (−74°…−80°), 1.42×, ekranı kesiyor |
 
-Keyframe'ler `DESKTOP` / `MOBILE` sabitlerinde; kırılım değişince bileşen `key` ile yeniden kurulur.
+Keyframe'ler `DESKTOP` / `MOBILE` sabitlerinde, 8 noktalı (`K`): her bölümde tüp yazı görünürken sabit durur
+(0.30–0.48, 0.56–0.74, 0.84–1), yalnızca aralardaki geçişlerde hareket eder; kırılım değişince bileşen `key` ile yeniden kurulur.
 `StarField`: üç katman minik beş köşeli yıldız (deterministik dağılım), katman başına farklı scroll hızı
 (`y` −220/−460/−760px) ve bölüm zeminine göre `color` geçişi (ivory → turkuaz → pembe → altın paletleri);
 yıldızlar `fill: currentColor` ile katman rengini alır, yalnızca 3 motion öğesi güncellenir.

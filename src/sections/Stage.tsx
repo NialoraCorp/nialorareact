@@ -14,7 +14,10 @@ import { Rich } from '@/components/ui/Rich'
    cümleler yer değiştirir, ön yüz tüp döner / kayar / büyür.
    Yalnızca transform + opacity → compositor üzerinde akıcı. */
 
-const K = [0, 0.25, 0.5, 0.75, 1]
+/* Tüp her bölümde yazı görünürken SABİT durur, yalnızca geçişlerde hareket eder:
+   ch1 0–0.18 · geçiş · ch2 0.30–0.48 · geçiş · ch3 0.56–0.74 · geçiş · ch4 0.84–1
+   (metin pencereleri: ch2 0.32–0.45, ch3 0.59–0.70, ch4 0.86+) */
+const K = [0, 0.18, 0.3, 0.48, 0.56, 0.74, 0.84, 1]
 
 /* Jeldeki minik yıldızlar: üç derinlik katmanı, scroll ile farklı hızlarda kayar,
    yalnızca ilk bölümde görünür (opacity = c1O). Deterministik dağılım. */
@@ -76,16 +79,17 @@ function StarField({ progress }: { progress: MotionValue<number> }) {
   )
 }
 const DESKTOP = {
-  x: ['27vw', '-24vw', '22vw', '2vw', '-6vw'],
-  y: ['8vh', '-30vh', '34vh', '18vh', '20vh'],
-  r: [-8, 12, -16, -74, -80],
-  s: [1, 1.3, 1.34, 1.42, 1.46],
+  // ch1 sağ (yazı solda) · ch2 sol yarı (yazı sağda) · ch3 sağ yarı (yazı solda) · ch4 yatay, ortada
+  x: ['27vw', '27vw', '-25vw', '-25vw', '24vw', '24vw', '2vw', '-4vw'],
+  y: ['8vh', '8vh', '-28vh', '-28vh', '32vh', '32vh', '18vh', '20vh'],
+  r: [-8, -8, 12, 12, -16, -16, -74, -80],
+  s: [1, 1, 1.42, 1.42, 1.44, 1.44, 1.42, 1.46],
 }
 const MOBILE = {
-  x: ['0vw', '-6vw', '8vw', '0vw', '0vw'],
-  y: ['22vh', '-22vh', '30vh', '8vh', '10vh'],
-  r: [-6, 10, -12, -70, -76],
-  s: [1, 1.22, 1.26, 1.3, 1.34],
+  x: ['0vw', '0vw', '-6vw', '-6vw', '8vw', '8vw', '0vw', '0vw'],
+  y: ['22vh', '22vh', '-22vh', '-22vh', '30vh', '30vh', '8vh', '10vh'],
+  r: [-6, -6, 10, 10, -12, -12, -70, -76],
+  s: [1, 1, 1.22, 1.22, 1.26, 1.26, 1.3, 1.34],
 }
 
 export function Stage() {
