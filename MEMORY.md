@@ -70,7 +70,9 @@ Koddan türetilemeyen kararlar, bağlam ve açık işler. Yeni bir karar alınd�
 ## Yayın durumu
 - 19 Ekim 2026: site kendi Plesk/Windows (IIS) sunucusunda canlı, IP 178.210.168.80; DNS Hostinger'da (A @ ve www).
   Let's Encrypt sertifikası nialora.com + www (16 Ocak 2027'ye kadar, Plesk otomatik yeniler). HTTP→HTTPS açık.
-- Güncelleme yolu: `npm run build` → dist zip → Plesk File Manager `httpdocs` üzerine çıkar (DEPLOY.md).
+- Güncelleme yolu: `npm run deploy` → GitHub `deploy` dalı → Plesk Git (bir kerelik kurulum, DEPLOY.md 7a);
+  yedek: dist zip'i File Manager ile `httpdocs` üzerine çıkarmak. 16 Kasım 2026: deploy dalı oluşturuldu, Plesk Git
+  bağlantısı kullanıcı tarafında bekliyor.
 - Küçük kalanlar: `httpdocs/nialora-site-build.zip` sunucudan silinmeli; Plesk Hosting Settings'te Preferred domain
   www'siz seçilirse www → nialora.com 301 olur (şu an www 200 dönüyor).
 
