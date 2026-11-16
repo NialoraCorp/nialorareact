@@ -56,12 +56,21 @@ export function Dealer() {
       _captcha: 'false',
     }
     try {
+      // 20 sn içinde cevap gelmezse bekletme (Formsubmit zaman zaman yavaşlıyor / kesiliyor)
+      const signal = 'timeout' in AbortSignal ? AbortSignal.timeout(20_000) : undefined
       const res = await fetch(DEALER.endpoint, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
         body: JSON.stringify(payload),
+        signal,
       })
       if (!res.ok) throw new Error(String(res.status))
+      // Formsubmit hata durumunda da 200 döner: {"success":"false","message":"This form needs Activation..."}
+      const json: { success?: string | boolean; message?: string } = await res.json().catch(() => ({}))
+      if (String(json.success) !== 'true') {
+        console.warn('[dealer] Formsubmit:', json.message ?? json)
+        throw new Error('formsubmit')
+      }
       setStatus('sent')
       form.reset()
     } catch {

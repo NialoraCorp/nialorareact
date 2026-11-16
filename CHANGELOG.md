@@ -3,6 +3,8 @@
 Biçim: [Keep a Changelog](https://keepachangelog.com/tr/1.1.0/). Tarihler ISO (YYYY-MM-DD).
 
 ## [Unreleased]
+- Bayilik formu: Formsubmit'in 200 koduyla döndürdüğü `success:false` cevabı (ör. aktivasyon eksik) artık
+  "alındı" değil hata olarak gösterilir, mesaj konsola yazılır; istek 20 sn'de cevap vermezse kesilir.
 - `npm run deploy:ftp` (`scripts/deploy-ftp.py`): dist'i FTPS ile doğrudan Plesk `httpdocs`'a yükler; kimlik
   bilgileri git dışı `.env.deploy` dosyasında (`.env.deploy.example` şablonu), `index.html` en son yüklenir (DEPLOY.md 7b).
 - `npm run deploy` (`scripts/deploy-branch.sh`): build çıktısını GitHub `deploy` dalına yayınlar; Plesk Git bu dalı
