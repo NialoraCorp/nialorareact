@@ -80,7 +80,7 @@ const tr = {
       { t: 'Ferah nefes', d: 'Mentol ve uzun süren serinlik.' },
       { t: 'Temiz dişler', d: 'Temizleyerek daha parlak görünüm.' },
     ],
-    ticker: ['%0,5 niasinamid', '%0,22 sodyum florür', 'nane ferahlığı', 'mika & kalay oksit ışıltısı', 'çift fazlı formül', '100 g', 'ilk üretim · sınırlı sayıda'],
+    ticker: ['%0,5 niasinamid', '%0,22 sodyum florür', 'nane ferahlığı', 'çift fazlı formül', '100 g', 'ilk üretim · sınırlı sayıda'],
   },
   film: {
     line: 'Ferahlığın en *zarif* hali.',
@@ -228,7 +228,7 @@ const en: Dict = {
       { t: 'Fresh breath', d: 'Menthol and long-lasting coolness.' },
       { t: 'Clean teeth', d: 'Cleans for a brighter-looking smile.' },
     ],
-    ticker: ['0.5% niacinamide', '0.22% sodium fluoride', 'mint freshness', 'mica & tin oxide shimmer', 'dual-phase formula', '100 g', 'first batch · limited'],
+    ticker: ['0.5% niacinamide', '0.22% sodium fluoride', 'mint freshness', 'dual-phase formula', '100 g', 'first batch · limited'],
   },
   film: {
     line: 'The most *elegant* form of freshness.',

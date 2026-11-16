@@ -3,6 +3,7 @@
 Biçim: [Keep a Changelog](https://keepachangelog.com/tr/1.1.0/). Tarihler ISO (YYYY-MM-DD).
 
 ## [Unreleased]
+- Niasinamid bölümündeki kayan şeritten "mika & kalay oksit ışıltısı" (EN: mica & tin oxide shimmer) çıkarıldı.
 - Eczane bayilik başvuru formu (`Dealer`): eczane adı, eczacı, e-posta, telefon, şehir (isteğe bağlı), talep; KVKK
   onay kutusu, bal küpü (honeypot), gönderiliyor/alındı/hata durumları ve mailto yedeği. Gönderim Formsubmit AJAX
   ucu üzerinden alvionsaglik@gmail.com'a e-posta olarak gider (ilk gönderimde tek seferlik aktivasyon maili).
