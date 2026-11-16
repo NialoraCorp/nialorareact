@@ -84,6 +84,21 @@ DNS sunucuya yönlendikten SONRA:
 5. Paylaşım önizlemesi: https://developers.facebook.com/tools/debug/ ve https://cards-dev.twitter.com/validator → og-image görünmeli.
 
 ## 7. Güncelleme yayınlamak
+
+### 7a. Git ile (önerilen, tek komut)
+Build çıktısı GitHub'daki `deploy` dalında tutulur; Plesk bu dalı `httpdocs`'a çeker.
+```bash
+npm run deploy      # build alır, dist/ içeriğini origin/deploy dalına yazar
+```
+**Bir kerelik Plesk kurulumu:** Websites & Domains → nialora.com → **Git** → Add Repository →
+"Remote Git hosting like GitHub" → Repository URL `https://github.com/NialoraCorp/nialorareact.git`
+(depo herkese açık, anahtar gerekmez) → **Branch: `deploy`** → Deployment path `/httpdocs` →
+Deployment mode: **Automatic** (Plesk bir webhook adresi verir; GitHub'da Settings → Webhooks → Add webhook ile
+bu adresi "Just the push event" olarak ekleyin) ya da Manual (Plesk'te "Pull Updates" düğmesi).
+Otomatik modda her `npm run deploy` sonrası site dakikalar içinde güncellenir. Plesk ekstra dosyaları silmez;
+`httpdocs` içinde eski `assets/index-*.js` birikirse zararsızdır.
+
+### 7b. Elle (yedek yol)
 ```bash
 npm run build
 ```

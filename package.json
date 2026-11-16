@@ -8,7 +8,8 @@
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-    "build:single": "vite build && node scripts/build-single.mjs"
+    "build:single": "vite build && node scripts/build-single.mjs",
+    "deploy": "bash scripts/deploy-branch.sh"
   },
   "dependencies": {
     "clsx": "^2.1.1",
