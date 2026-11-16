@@ -17,7 +17,8 @@ index.html (SEO meta, JSON-LD, fontlar)
             │   ├─ Story      editoryal yayılım: ritüel karesi + 3 kısa cümle + imza
             │   ├─ Niacinamide altın bölüm + içerik şeridi
             │   ├─ Film       tam ekran video (masaüstü yatay+ses, mobil dikey kurgu) + kısa film şeridi
-            │   ├─ Buy        ön yüz tüp + fiyat cümlesi + Trendyol CTA
+            │   ├─ Buy        ön yüz tüp + kanal cümlesi + Trendyol CTA
+            │   ├─ Dealer     eczane bayilik formu → Formsubmit AJAX → e-posta
             │   └─ Faq        "Sıkça sorulanlar" akordeonu (kullanım, uyarı, INCI…)
             ├─ <Footer>
             ├─ <ScrollStar>   scroll ile dönen altın yıldız (ilerleme imzası)
@@ -40,7 +41,7 @@ src/
   motion/MotionProvider.tsx
   components/             Loader, Nav, LangToggle, ScrollStar, GrainOverlay
   components/ui/          SplitText, Rich, Reveal, Marquee, Magnetic, Button, Accordion, Star
-  sections/               Stage, Lineup, Story, Niacinamide, Film, Buy, Faq, Footer
+  sections/               Stage, Lineup, Story, Niacinamide, Film, Buy, Dealer, Faq, Footer
   index.css               Tailwind v4 @theme (renk, font, easing), .statement, .em-word/.flourish, .grain
 design-system/nialora/    UI UX Pro Max çıktısı (MASTER.md) + marka geçersiz kılmaları (pages/home.md)
 scripts/cutout.py         beyaz zeminli ürün fotoğrafından şeffaf PNG kesimi (flood-fill)
@@ -101,6 +102,12 @@ ffmpeg -i "<kaynak.mp4>" -vf "hqdn3d=1.5:1.5:4:4,scale=1920:1080:flags=lanczos,u
 ffmpeg -f lavfi -i "color=c=0xF7ECEA:s=1200x630" -i public/brand/tube-front.jpg -filter_complex "[1:v]scale=-2:600[t];[0:v][t]overlay=(W-w)/2:(H-h)/2" -frames:v 1 public/og-image.jpg
 ```
 Gri stüdyo zeminli fotoğraflar (arka yüz, koni) kesime uygun değil ve şu an kullanılmıyor (`public/brand/` içinde duruyor).
+
+## Bayilik formu
+Sunucu kodu yok; `Dealer.tsx` formu JSON olarak `DEALER.endpoint`'e (Formsubmit AJAX) POST eder, servis e-postayı
+`DEALER.email`'e iletir (`_subject`, `_replyto`, `_template: table`). Spam için gizli `_honey` alanı; zorunlu alanlar
+tarayıcı doğrulamasıyla (`reportValidity`). Hata durumunda `mailto:` yedeği gösterilir. İlk gönderimde Formsubmit
+alıcıya aktivasyon maili yollar; aktivasyon sonrası verilen takma ad endpoint'e yazılarak adres gizlenebilir.
 
 ## SEO
 `index.html`: TR meta, OG/Twitter, JSON-LD (Organization, WebSite, Product+Offer 450 TRY, gtin13).

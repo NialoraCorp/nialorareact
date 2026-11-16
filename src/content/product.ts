@@ -38,6 +38,17 @@ export const PRODUCT = {
   ],
 } as const
 
+/**
+ * Eczane bayilik formu. Site statik olduğu için gönderim Formsubmit'in AJAX ucuna gider ve
+ * e-posta olarak iletilir. İlk gönderimde alıcı adrese tek seferlik aktivasyon maili gelir;
+ * aktivasyondan sonra Formsubmit'in verdiği rastgele takma adı (alias) endpoint'e yazarak
+ * e-posta adresini kaynak koddan gizleyebilirsiniz.
+ */
+export const DEALER = {
+  email: 'alvionsaglik@gmail.com',
+  endpoint: 'https://formsubmit.co/ajax/alvionsaglik@gmail.com',
+} as const
+
 export const ASSETS = {
   /** Şeffaf kesim (flood-fill ile üretildi, WebP+alpha) — hero ve iki faz sahnesi. */
   tubeCut: '/brand/tube-front.webp',

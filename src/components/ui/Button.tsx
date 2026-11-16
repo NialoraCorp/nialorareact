@@ -12,6 +12,8 @@ interface Props {
   external?: boolean
   icon?: boolean
   className?: string
+  type?: 'button' | 'submit'
+  disabled?: boolean
 }
 
 const variants = {
@@ -25,11 +27,12 @@ const sizes = {
 }
 
 /** Marka butonu: manyetik hover, kayan ok ikonu, yumuşak geçişler. */
-export function Button({ children, href, onClick, variant = 'primary', size = 'md', external, icon = true, className }: Props) {
+export function Button({ children, href, onClick, variant = 'primary', size = 'md', external, icon = true, className, type = 'button', disabled }: Props) {
   const cls = cn(
     'group inline-flex items-center justify-center gap-3 rounded-full font-sans font-medium uppercase tracking-[0.22em] transition-[background-color,color,border-color,box-shadow] duration-500 ease-lux',
     variants[variant],
     sizes[size],
+    disabled && 'pointer-events-none opacity-60',
     className,
   )
   const inner = (
@@ -50,7 +53,7 @@ export function Button({ children, href, onClick, variant = 'primary', size = 'm
           {inner}
         </a>
       ) : (
-        <button type="button" onClick={onClick} className={cls}>
+        <button type={type} onClick={onClick} className={cls} disabled={disabled}>
           {inner}
         </button>
       )}

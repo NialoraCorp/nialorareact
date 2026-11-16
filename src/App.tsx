@@ -9,6 +9,7 @@ import { Story } from '@/sections/Story'
 import { Niacinamide } from '@/sections/Niacinamide'
 import { Film } from '@/sections/Film'
 import { Buy } from '@/sections/Buy'
+import { Dealer } from '@/sections/Dealer'
 import { Faq } from '@/sections/Faq'
 import { Footer } from '@/sections/Footer'
 
@@ -31,6 +32,7 @@ export default function App() {
         <Niacinamide />
         <Film />
         <Buy />
+        <Dealer />
         <Faq />
       </main>
       <Footer />

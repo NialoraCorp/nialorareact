@@ -3,6 +3,10 @@
 Biçim: [Keep a Changelog](https://keepachangelog.com/tr/1.1.0/). Tarihler ISO (YYYY-MM-DD).
 
 ## [Unreleased]
+- Eczane bayilik başvuru formu (`Dealer`): eczane adı, eczacı, e-posta, telefon, şehir (isteğe bağlı), talep; KVKK
+  onay kutusu, bal küpü (honeypot), gönderiliyor/alındı/hata durumları ve mailto yedeği. Gönderim Formsubmit AJAX
+  ucu üzerinden alvionsaglik@gmail.com'a e-posta olarak gider (ilk gönderimde tek seferlik aktivasyon maili).
+  Nav/footer'a "Eczaneler", satış notuna bağlantı, SSS'ye (+JSON-LD) "Eczane olarak nasıl bayi olurum?" eklendi.
 - Sahne koreografisi: tüp her bölümde yazının karşı yarısında, düşeyde ortalı ve tamamı görünür; bölüm boyunca
   hafif süzülme, geçişler uzun pencerelerde ease-in-out ile, scroll yayı yumuşatıldı; hero yazısı geçişten önce söner.
 - Satış bölümünden "Hediye kutusuyla" ibaresi kaldırıldı (TR/EN); ürünün hediye kutusu yok.

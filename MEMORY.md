@@ -51,6 +51,13 @@ Koddan türetilemeyen kararlar, bağlam ve açık işler. Yeni bir karar alınd�
 ## Kullanıcı düzeltmeleri
 - **Hediye kutusu yok** (19 Ekim 2026): PDF'teki "indirim yerine hediye kutusu" ilkesi uygulanmıyor; sitede hediye kutusundan bahsetme.
 
+## Bayilik formu (16 Kasım 2026)
+- Kullanıcı isteği: eczane adı, eczacı adı, e-posta, telefon, talep; alıcı alvionsaglik@gmail.com.
+- Statik site olduğu için Formsubmit (formsubmit.co) AJAX ucu kullanıldı. **İlk gerçek gönderimde alıcı adrese
+  aktivasyon maili gelir; "Activate" tıklanmadan sonraki başvurular iletilmez.** Aktivasyon sonrası Formsubmit'in
+  verdiği alias `DEALER.endpoint`'e yazılırsa e-posta adresi kaynak koddan çıkar.
+- Alternatif (ileride): ASP.NET 4.8 sunucuda açık; SMTP bilgisi verilirse kendi `.ashx` handler'ı yazılabilir.
+
 ## Açık işler
 - [ ] Trendyol ürün sayfasının kesin bağlantısı (`PRODUCT.trendyolUrl` şu an marka araması).
 - [ ] Instagram / TikTok bağlantıları (`#` yer tutucu).
@@ -58,6 +65,13 @@ Koddan türetilemeyen kararlar, bağlam ve açık işler. Yeni bir karar alınd�
 - [ ] `public/bg*.mp4|webm|gif` eski videolar (≈31 MB) — kullanıcıya sorulup temizlenebilir.
 - [ ] `src/assets/` (Vite şablon kalıntıları + hero.png) kullanılmıyor.
 - [ ] Kullanıcı localde onaylamadan push yok.
+
+## Yayın durumu
+- 19 Ekim 2026: site kendi Plesk/Windows (IIS) sunucusunda canlı, IP 178.210.168.80; DNS Hostinger'da (A @ ve www).
+  Let's Encrypt sertifikası nialora.com + www (16 Ocak 2027'ye kadar, Plesk otomatik yeniler). HTTP→HTTPS açık.
+- Güncelleme yolu: `npm run build` → dist zip → Plesk File Manager `httpdocs` üzerine çıkar (DEPLOY.md).
+- Küçük kalanlar: `httpdocs/nialora-site-build.zip` sunucudan silinmeli; Plesk Hosting Settings'te Preferred domain
+  www'siz seçilirse www → nialora.com 301 olur (şu an www 200 dönüyor).
 
 ## Kaynaklar
 - Marka belgesi ve görseller: `~/Downloads/nialora/` (PDF + WhatsApp fotoğraf/video dışa aktarımları).

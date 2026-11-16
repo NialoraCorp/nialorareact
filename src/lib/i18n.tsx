@@ -42,6 +42,7 @@ const tr = {
       { href: '#niasinamid', label: 'Niasinamid' },
       { href: '#film', label: 'Film' },
       { href: '#satin-al', label: 'Satın Al' },
+      { href: '#bayilik', label: 'Eczaneler' },
       { href: '#sss', label: 'Sıkça Sorulanlar' },
     ],
     trendyol: 'Trendyol\'da Satın Al',
@@ -96,7 +97,22 @@ const tr = {
     product: 'NIALORA Niasinamid İçeren Diş Macunu · 100 g · Nane · Florürlü',
     trendyol: 'Trendyol\'da Satın Al',
     pharmacy: 'Eczanelerde tezgah standında. Market rafında ve indirim sitelerinde değil.',
+    dealerLink: 'Eczane misiniz? Bayilik başvurusu',
     alt: 'NIALORA tüpünün ön yüzü, altın etiket',
+  },
+  dealer: {
+    eyebrow: 'Eczaneler için',
+    line: 'Eczanenizde *NIALORA* olsun.',
+    lead: 'Bayilik için formu doldurun; ekibimiz tezgah standı, adet ve teslimat detaylarıyla size dönsün.',
+    fields: { pharmacy: 'Eczane adı', pharmacist: 'Eczacı adı soyadı', email: 'E-posta', phone: 'Telefon', city: 'Şehir / ilçe', message: 'Talebiniz' },
+    placeholders: { pharmacy: 'Örn. Gül Eczanesi', pharmacist: 'Ad Soyad', email: 'ornek@eczane.com', phone: '05xx xxx xx xx', city: 'İstanbul / Kadıköy', message: 'Örn. 15\'li tezgah standı istiyoruz, aylık tahmini adet…' },
+    optional: 'isteğe bağlı',
+    consent: 'Bilgilerimin bayilik başvurumun değerlendirilmesi için Alvion Sağlık\'a iletilmesini kabul ediyorum.',
+    submit: 'Başvuruyu Gönder',
+    sending: 'Gönderiliyor…',
+    sent: { title: 'Başvurunuz alındı.', text: 'En kısa sürede e-posta ya da telefonla dönüş yapacağız.' },
+    error: { title: 'Gönderilemedi.', text: 'Lütfen tekrar deneyin ya da doğrudan e-posta gönderin:' },
+    subject: 'NIALORA eczane bayilik başvurusu',
   },
   faq: {
     title: 'Sıkça *sorulanlar.*',
@@ -128,6 +144,10 @@ const tr = {
       {
         q: 'Nerede satılır?',
         a: 'Seçili eczanelerde tezgah standında ve Trendyol\'da. Market rafında ve indirim sitelerinde değil.',
+      },
+      {
+        q: 'Eczane olarak nasıl bayi olurum?',
+        a: 'Sayfadaki bayilik formunu doldurun; ekibimiz tezgah standı, adet ve teslimat detaylarıyla dönüş yapar. Doğrudan e-posta için: alvionsaglik@gmail.com.',
       },
       {
         q: 'Kim üretiyor?',
@@ -169,6 +189,7 @@ const en: Dict = {
       { href: '#niasinamid', label: 'Niacinamide' },
       { href: '#film', label: 'Film' },
       { href: '#satin-al', label: 'Buy' },
+      { href: '#bayilik', label: 'Pharmacies' },
       { href: '#sss', label: 'FAQ' },
     ],
     trendyol: 'Buy on Trendyol',
@@ -223,7 +244,22 @@ const en: Dict = {
     product: 'NIALORA Niacinamide Toothpaste · 100 g · Mint · With fluoride',
     trendyol: 'Buy on Trendyol',
     pharmacy: 'On pharmacy counters. Not on supermarket shelves or discount sites.',
+    dealerLink: 'Are you a pharmacy? Apply to stock NIALORA',
     alt: 'Front of the NIALORA tube with its gold label',
+  },
+  dealer: {
+    eyebrow: 'For pharmacies',
+    line: 'Bring *NIALORA* to your pharmacy.',
+    lead: 'Fill in the form; our team will get back to you with counter display, quantity and delivery details.',
+    fields: { pharmacy: 'Pharmacy name', pharmacist: 'Pharmacist full name', email: 'Email', phone: 'Phone', city: 'City / district', message: 'Your request' },
+    placeholders: { pharmacy: 'e.g. Gül Pharmacy', pharmacist: 'Full name', email: 'you@pharmacy.com', phone: '+90 5xx xxx xx xx', city: 'Istanbul / Kadıköy', message: 'e.g. we would like a 15-unit counter display, estimated monthly quantity…' },
+    optional: 'optional',
+    consent: 'I agree that my details are shared with Alvion Sağlık to evaluate my application.',
+    submit: 'Send Application',
+    sending: 'Sending…',
+    sent: { title: 'Application received.', text: 'We will get back to you by email or phone shortly.' },
+    error: { title: 'Could not send.', text: 'Please try again or email us directly:' },
+    subject: 'NIALORA pharmacy partnership application',
   },
   faq: {
     title: 'Frequently *asked.*',
@@ -255,6 +291,10 @@ const en: Dict = {
       {
         q: 'Where is it sold?',
         a: 'On the counters of selected pharmacies and on Trendyol. Not on supermarket shelves or discount sites.',
+      },
+      {
+        q: 'How can my pharmacy stock NIALORA?',
+        a: 'Fill in the partnership form on this page; our team will get back to you with counter display, quantity and delivery details. Direct email: alvionsaglik@gmail.com.',
       },
       {
         q: 'Who makes it?',

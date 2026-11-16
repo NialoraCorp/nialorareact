@@ -19,7 +19,12 @@ export function Buy() {
   const cta = (
     <>
       <Button href={PRODUCT.trendyolUrl} external variant="primary">{t.buy.trendyol}</Button>
-      <p className="mt-6 max-w-[40ch] text-[13px] leading-[1.7] text-mauve">{t.buy.pharmacy}</p>
+      <p className="mt-6 max-w-[40ch] text-[13px] leading-[1.7] text-mauve">
+        {t.buy.pharmacy}{' '}
+        <a href="#bayilik" className="whitespace-nowrap border-b border-gold/60 text-gold-deep transition-colors hover:border-gold-deep">
+          {t.buy.dealerLink} ↗
+        </a>
+      </p>
     </>
   )
 

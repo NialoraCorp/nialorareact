@@ -60,6 +60,10 @@ Tüm görünür metin `src/lib/i18n.tsx` sözlüğünde (TR birincil, EN ikincil
   Bileşen kurulumu: `npx shadcn@latest add "https://21st.dev/r/<yazar>/<bileşen>?api_key=$API_KEY_21ST"`.
   Kurulan bileşenler `src/components/ui/` altına gelir; Tailwind v4 + `cn` hazır.
 
+## Bayilik formu
+`src/sections/Dealer.tsx` + `DEALER` (`src/content/product.ts`). Alıcı alvionsaglik@gmail.com, Formsubmit AJAX ucu.
+Alan ekler/çıkarırken `i18n.dealer.fields` ve payload anahtarlarını birlikte güncelleyin (anahtarlar e-postada etiket olur).
+
 ## Varlıklar
 `public/brand/`: ürün fotoğrafları ve afiş kırpımları (orijinaller `~/Downloads/nialora` ve `ekler/`), kesim
 `scripts/cutout.py` ile; film `film-wide.mp4` (+poster), kısa filmler `reel-1..4.mp4` (Story bölümünde).
