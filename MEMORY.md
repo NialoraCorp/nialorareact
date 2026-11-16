@@ -52,7 +52,8 @@ Koddan türetilemeyen kararlar, bağlam ve açık işler. Yeni bir karar alınd�
 - **Hediye kutusu yok** (19 Ekim 2026): PDF'teki "indirim yerine hediye kutusu" ilkesi uygulanmıyor; sitede hediye kutusundan bahsetme.
 
 ## Bayilik formu (16 Kasım 2026)
-- Kullanıcı isteği: eczane adı, eczacı adı, e-posta, telefon, talep; alıcı alvionsaglik@gmail.com.
+- Kullanıcı isteği: eczane adı, eczacı adı, e-posta, telefon, talep; alıcı alvionsaglik@gmail.com. **Adres sitede
+  gösterilmez**; form bir düğmeyle açılır.
 - Statik site olduğu için Formsubmit (formsubmit.co) AJAX ucu kullanıldı. **İlk gerçek gönderimde alıcı adrese
   aktivasyon maili gelir; "Activate" tıklanmadan sonraki başvurular iletilmez.** Aktivasyon sonrası Formsubmit'in
   verdiği alias `DEALER.endpoint`'e yazılırsa e-posta adresi kaynak koddan çıkar.

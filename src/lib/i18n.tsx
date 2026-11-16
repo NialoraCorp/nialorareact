@@ -108,10 +108,11 @@ const tr = {
     placeholders: { pharmacy: 'Örn. Gül Eczanesi', pharmacist: 'Ad Soyad', email: 'ornek@eczane.com', phone: '05xx xxx xx xx', city: 'İstanbul / Kadıköy', message: 'Örn. 15\'li tezgah standı istiyoruz, aylık tahmini adet…' },
     optional: 'isteğe bağlı',
     consent: 'Bilgilerimin bayilik başvurumun değerlendirilmesi için Alvion Sağlık\'a iletilmesini kabul ediyorum.',
+    open: 'Bayilik Başvurusu Yap',
     submit: 'Başvuruyu Gönder',
     sending: 'Gönderiliyor…',
     sent: { title: 'Başvurunuz alındı.', text: 'En kısa sürede e-posta ya da telefonla dönüş yapacağız.' },
-    error: { title: 'Gönderilemedi.', text: 'Lütfen tekrar deneyin ya da doğrudan e-posta gönderin:' },
+    error: { title: 'Gönderilemedi.', text: 'Lütfen birkaç dakika sonra tekrar deneyin.' },
     subject: 'NIALORA eczane bayilik başvurusu',
   },
   faq: {
@@ -147,7 +148,7 @@ const tr = {
       },
       {
         q: 'Eczane olarak nasıl bayi olurum?',
-        a: 'Sayfadaki bayilik formunu doldurun; ekibimiz tezgah standı, adet ve teslimat detaylarıyla dönüş yapar. Doğrudan e-posta için: alvionsaglik@gmail.com.',
+        a: 'Sayfadaki "Eczaneler" bölümünden bayilik başvurusu formunu doldurun; ekibimiz tezgah standı, adet ve teslimat detaylarıyla size dönüş yapar.',
       },
       {
         q: 'Kim üretiyor?',
@@ -255,10 +256,11 @@ const en: Dict = {
     placeholders: { pharmacy: 'e.g. Gül Pharmacy', pharmacist: 'Full name', email: 'you@pharmacy.com', phone: '+90 5xx xxx xx xx', city: 'Istanbul / Kadıköy', message: 'e.g. we would like a 15-unit counter display, estimated monthly quantity…' },
     optional: 'optional',
     consent: 'I agree that my details are shared with Alvion Sağlık to evaluate my application.',
+    open: 'Apply for Partnership',
     submit: 'Send Application',
     sending: 'Sending…',
     sent: { title: 'Application received.', text: 'We will get back to you by email or phone shortly.' },
-    error: { title: 'Could not send.', text: 'Please try again or email us directly:' },
+    error: { title: 'Could not send.', text: 'Please try again in a few minutes.' },
     subject: 'NIALORA pharmacy partnership application',
   },
   faq: {
@@ -294,7 +296,7 @@ const en: Dict = {
       },
       {
         q: 'How can my pharmacy stock NIALORA?',
-        a: 'Fill in the partnership form on this page; our team will get back to you with counter display, quantity and delivery details. Direct email: alvionsaglik@gmail.com.',
+        a: 'Fill in the partnership form in the "Pharmacies" section; our team will get back to you with counter display, quantity and delivery details.',
       },
       {
         q: 'Who makes it?',

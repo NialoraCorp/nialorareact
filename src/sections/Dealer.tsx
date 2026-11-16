@@ -1,4 +1,4 @@
-import { useRef, useState, type FormEvent } from 'react'
+import { useEffect, useRef, useState, type FormEvent } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
 import { useI18n } from '@/lib/i18n'
 import { DEALER } from '@/content/product'
@@ -14,13 +14,22 @@ const field =
   'w-full border-b border-plum/25 bg-transparent py-3 text-[15px] text-plum placeholder:text-plum/35 transition-colors duration-300 focus:border-gold focus:outline-none'
 const label = 'block text-[10.5px] font-semibold uppercase tracking-[0.28em] text-plum/55'
 
-/** Eczane bayilik başvurusu: statik site → Formsubmit AJAX ucu → alvionsaglik@gmail.com */
+/**
+ * Eczane bayilik başvurusu. Düğmeye basılınca form açılır; gönderim Formsubmit AJAX ucu
+ * üzerinden DEALER.email'e e-posta olarak gider. Adres sayfada gösterilmez.
+ */
 export function Dealer() {
   const { t } = useI18n()
   const ref = useRef<HTMLElement>(null)
+  const firstField = useRef<HTMLInputElement>(null)
   useSectionTheme(ref, 'light')
+  const [open, setOpen] = useState(false)
   const [status, setStatus] = useState<Status>('idle')
   const d = t.dealer
+
+  useEffect(() => {
+    if (open) window.setTimeout(() => firstField.current?.focus({ preventScroll: true }), 650)
+  }, [open])
 
   async function onSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault()
@@ -56,52 +65,66 @@ export function Dealer() {
     }
   }
 
-  const mailto = `mailto:${DEALER.email}?subject=${encodeURIComponent(d.subject)}`
-
   return (
     <section id="bayilik" ref={ref} className="bg-pearl px-[clamp(20px,5vw,72px)] py-[clamp(96px,14vh,180px)]">
-      <div className="mx-auto grid max-w-[1200px] gap-14 md:grid-cols-[0.85fr_1.15fr] md:gap-20">
-        <div>
-          <Reveal as="p" variant="fade" className="eyebrow">{d.eyebrow}</Reveal>
-          <SplitText as="h2" text={d.line} className="statement mt-5 max-w-[12ch] text-plum" />
-          <Reveal as="p" delay={0.15} className="mt-7 max-w-[36ch] font-display text-[clamp(20px,2vw,28px)] italic leading-[1.35] text-plum/75">
-            {d.lead}
-          </Reveal>
-          <Reveal as="p" delay={0.25} className="mt-8 text-[13px] text-mauve">
-            <a href={mailto} className="border-b border-gold/60 text-gold-deep transition-colors hover:border-gold-deep">{DEALER.email}</a>
-          </Reveal>
+      <div className="mx-auto max-w-[1200px]">
+        <div className="grid gap-10 md:grid-cols-[1fr_0.9fr] md:items-end md:gap-20">
+          <div>
+            <Reveal as="p" variant="fade" className="eyebrow">{d.eyebrow}</Reveal>
+            <SplitText as="h2" text={d.line} className="statement mt-5 max-w-[12ch] text-plum" />
+          </div>
+          <div>
+            <Reveal as="p" delay={0.15} className="max-w-[36ch] font-display text-[clamp(20px,2vw,28px)] italic leading-[1.35] text-plum/75">
+              {d.lead}
+            </Reveal>
+            <AnimatePresence initial={false}>
+              {!open && status !== 'sent' && (
+                <motion.div
+                  key="open"
+                  className="mt-8"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0, transition: { duration: 0.25 } }}
+                >
+                  <Button onClick={() => setOpen(true)} aria-expanded={open} aria-controls="dealer-form">
+                    {d.open}
+                  </Button>
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </div>
         </div>
 
-        <Reveal delay={0.1} className="relative">
-          <AnimatePresence mode="wait" initial={false}>
-            {status === 'sent' ? (
-              <motion.div
-                key="sent"
-                initial={{ opacity: 0, y: 16 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: 0.7, ease: EASE }}
-                className="border-t border-gold/40 pt-8"
-              >
-                <p className="statement-sm text-plum">{d.sent.title}</p>
-                <p className="mt-4 max-w-[40ch] text-[15px] leading-[1.7] text-mauve">{d.sent.text}</p>
-              </motion.div>
-            ) : (
-              <motion.form
-                key="form"
-                onSubmit={onSubmit}
-                noValidate={false}
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: 0.5 }}
-                className="grid gap-8 sm:grid-cols-2"
-              >
+        <AnimatePresence initial={false} mode="wait">
+          {status === 'sent' ? (
+            <motion.div
+              key="sent"
+              initial={{ opacity: 0, y: 16 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.7, ease: EASE }}
+              className="mt-14 border-t border-gold/40 pt-8"
+              role="status"
+            >
+              <p className="statement-sm text-plum">{d.sent.title}</p>
+              <p className="mt-4 max-w-[40ch] text-[15px] leading-[1.7] text-mauve">{d.sent.text}</p>
+            </motion.div>
+          ) : open ? (
+            <motion.div
+              key="form"
+              id="dealer-form"
+              initial={{ height: 0, opacity: 0 }}
+              animate={{ height: 'auto', opacity: 1 }}
+              exit={{ height: 0, opacity: 0 }}
+              transition={{ duration: 0.8, ease: EASE }}
+              className="overflow-hidden"
+            >
+              <form onSubmit={onSubmit} className="mt-14 grid gap-8 border-t border-gold/40 pt-10 sm:grid-cols-2">
                 <input type="text" name="_honey" tabIndex={-1} autoComplete="off" className="hidden" aria-hidden />
 
                 <div>
                   <label htmlFor="dealer-pharmacy" className={label}>{d.fields.pharmacy}</label>
-                  <input id="dealer-pharmacy" name="pharmacy" required autoComplete="organization" placeholder={d.placeholders.pharmacy} className={field} />
+                  <input ref={firstField} id="dealer-pharmacy" name="pharmacy" required autoComplete="organization" placeholder={d.placeholders.pharmacy} className={field} />
                 </div>
                 <div>
                   <label htmlFor="dealer-pharmacist" className={label}>{d.fields.pharmacist}</label>
@@ -139,15 +162,14 @@ export function Dealer() {
                   </Button>
                   {status === 'error' && (
                     <p className="text-[13px] leading-[1.6] text-rose-deep" role="alert">
-                      <span className="font-semibold">{d.error.title}</span> {d.error.text}{' '}
-                      <a href={mailto} className="border-b border-rose-deep/50">{DEALER.email}</a>
+                      <span className="font-semibold">{d.error.title}</span> {d.error.text}
                     </p>
                   )}
                 </div>
-              </motion.form>
-            )}
-          </AnimatePresence>
-        </Reveal>
+              </form>
+            </motion.div>
+          ) : null}
+        </AnimatePresence>
       </div>
     </section>
   )

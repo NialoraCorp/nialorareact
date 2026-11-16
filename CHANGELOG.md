@@ -7,6 +7,7 @@ Biçim: [Keep a Changelog](https://keepachangelog.com/tr/1.1.0/). Tarihler ISO (
   onay kutusu, bal küpü (honeypot), gönderiliyor/alındı/hata durumları ve mailto yedeği. Gönderim Formsubmit AJAX
   ucu üzerinden alvionsaglik@gmail.com'a e-posta olarak gider (ilk gönderimde tek seferlik aktivasyon maili).
   Nav/footer'a "Eczaneler", satış notuna bağlantı, SSS'ye (+JSON-LD) "Eczane olarak nasıl bayi olurum?" eklendi.
+  Form "Bayilik Başvurusu Yap" düğmesiyle açılır; e-posta adresi sayfada hiçbir yerde gösterilmez.
 - Sahne koreografisi: tüp her bölümde yazının karşı yarısında, düşeyde ortalı ve tamamı görünür; bölüm boyunca
   hafif süzülme, geçişler uzun pencerelerde ease-in-out ile, scroll yayı yumuşatıldı; hero yazısı geçişten önce söner.
 - Satış bölümünden "Hediye kutusuyla" ibaresi kaldırıldı (TR/EN); ürünün hediye kutusu yok.

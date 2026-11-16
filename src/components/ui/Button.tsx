@@ -14,6 +14,8 @@ interface Props {
   className?: string
   type?: 'button' | 'submit'
   disabled?: boolean
+  'aria-expanded'?: boolean
+  'aria-controls'?: string
 }
 
 const variants = {
@@ -27,7 +29,7 @@ const sizes = {
 }
 
 /** Marka butonu: manyetik hover, kayan ok ikonu, yumuşak geçişler. */
-export function Button({ children, href, onClick, variant = 'primary', size = 'md', external, icon = true, className, type = 'button', disabled }: Props) {
+export function Button({ children, href, onClick, variant = 'primary', size = 'md', external, icon = true, className, type = 'button', disabled, ...aria }: Props) {
   const cls = cn(
     'group inline-flex items-center justify-center gap-3 rounded-full font-sans font-medium uppercase tracking-[0.22em] transition-[background-color,color,border-color,box-shadow] duration-500 ease-lux',
     variants[variant],
@@ -53,7 +55,7 @@ export function Button({ children, href, onClick, variant = 'primary', size = 'm
           {inner}
         </a>
       ) : (
-        <button type={type} onClick={onClick} className={cls} disabled={disabled}>
+        <button type={type} onClick={onClick} className={cls} disabled={disabled} {...aria}>
           {inner}
         </button>
       )}
