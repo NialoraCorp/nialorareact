@@ -46,7 +46,7 @@ export const PRODUCT = {
  */
 export const DEALER = {
   endpoint: 'https://api.web3forms.com/submit',
-  accessKey: '', // alıcı adresle alınan Web3Forms access key (boşken form hata gösterir)
+  accessKey: '8a76ce28-9a4c-484f-8e4d-088551a13f2d', // alıcı adresle alınan Web3Forms access key (istemci tarafı, gizli değil)
   fromName: 'Nialora Bayilik Formu',
 } as const
 

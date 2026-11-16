@@ -79,8 +79,8 @@ Koddan türetilemeyen kararlar, bağlam ve açık işler. Yeni bir karar alınd�
   Plesk'te Pull now → Deploy now. FTP betiği yedek; `.env.deploy` doldurulmadı.
 - Küçük kalanlar: `httpdocs/nialora-site-build.zip` sunucudan silinmeli; Plesk Hosting Settings'te Preferred domain
   www'siz seçilirse www → nialora.com 301 olur (şu an www 200 dönüyor).
-  Bayilik formu: Web3Forms anahtarı `DEALER.accessKey`'e yazılıp deploy edilmeli; sonra canlıda bir test başvurusu
-  yapılıp e-postanın (spam dahil) geldiği doğrulanmalı.
+  Bayilik formu: Web3Forms anahtarı 16 Kasım 2026'da `DEALER.accessKey`'e yazıldı ve deploy dalına alındı; canlıda
+  bir test başvurusu yapılıp e-postanın (spam dahil) geldiği doğrulanmalı.
 
 ## Kaynaklar
 - Marka belgesi ve görseller: `~/Downloads/nialora/` (PDF + WhatsApp fotoğraf/video dışa aktarımları).
