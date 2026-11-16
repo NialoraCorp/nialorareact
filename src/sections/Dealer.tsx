@@ -17,8 +17,8 @@ const field =
 const label = 'block text-[12px] font-bold uppercase tracking-[0.24em] text-plum/85'
 
 /**
- * Eczane bayilik başvurusu. Düğme bir modal açar (arka plan kararır); gönderim Formsubmit
- * AJAX ucu üzerinden DEALER.email'e e-posta olarak gider. Adres sayfada gösterilmez.
+ * Eczane bayilik başvurusu. Düğme bir modal açar (arka plan kararır); gönderim Web3Forms üzerinden
+ * Alvion Sağlık'a e-posta olarak gider (DEALER.accessKey). Alıcı adres ne sayfada ne kodda yer alır.
  */
 export function Dealer() {
   const { t } = useI18n()
@@ -40,23 +40,28 @@ export function Dealer() {
     const form = e.currentTarget
     if (!form.reportValidity()) return
     const data = new FormData(form)
-    if (data.get('_honey')) return // bot tuzağı
+    if (data.get('botcheck')) return // bot tuzağı
+    if (!DEALER.accessKey) {
+      console.warn('[dealer] Web3Forms access key tanımlı değil (src/content/product.ts → DEALER.accessKey)')
+      setStatus('error')
+      return
+    }
     setStatus('sending')
     const v = (k: string) => String(data.get(k) ?? '').trim()
     const payload: Record<string, string> = {
+      access_key: DEALER.accessKey,
+      subject: `${d.subject} — ${v('pharmacy')}`,
+      from_name: DEALER.fromName,
+      replyto: v('email'),
       [d.fields.pharmacy]: v('pharmacy'),
       [d.fields.pharmacist]: v('pharmacist'),
       [d.fields.email]: v('email'),
       [d.fields.phone]: v('phone'),
       [d.fields.city]: v('city') || '-',
       [d.fields.message]: v('message') || '-',
-      _subject: `${d.subject} — ${v('pharmacy')}`,
-      _replyto: v('email'),
-      _template: 'table',
-      _captcha: 'false',
     }
     try {
-      // 20 sn içinde cevap gelmezse bekletme (Formsubmit zaman zaman yavaşlıyor / kesiliyor)
+      // 20 sn içinde cevap gelmezse bekletme
       const signal = 'timeout' in AbortSignal ? AbortSignal.timeout(20_000) : undefined
       const res = await fetch(DEALER.endpoint, {
         method: 'POST',
@@ -64,12 +69,11 @@ export function Dealer() {
         body: JSON.stringify(payload),
         signal,
       })
-      if (!res.ok) throw new Error(String(res.status))
-      // Formsubmit hata durumunda da 200 döner: {"success":"false","message":"This form needs Activation..."}
-      const json: { success?: string | boolean; message?: string } = await res.json().catch(() => ({}))
-      if (String(json.success) !== 'true') {
-        console.warn('[dealer] Formsubmit:', json.message ?? json)
-        throw new Error('formsubmit')
+      // Web3Forms: 200 {success:true,message} · 400/429/500 {success:false,message}
+      const json: { success?: boolean | string; message?: string } = await res.json().catch(() => ({}))
+      if (!res.ok || String(json.success) !== 'true') {
+        console.warn('[dealer] Web3Forms:', res.status, json.message ?? json)
+        throw new Error(String(res.status))
       }
       setStatus('sent')
       form.reset()
@@ -184,7 +188,7 @@ function DealerModal({
               </div>
             ) : (
               <form onSubmit={onSubmit} className="mt-8 grid gap-7 sm:grid-cols-2">
-                <input type="text" name="_honey" tabIndex={-1} autoComplete="off" className="hidden" aria-hidden />
+                <input type="text" name="botcheck" tabIndex={-1} autoComplete="off" className="hidden" aria-hidden />
 
                 <div>
                   <label htmlFor="dealer-pharmacy" className={label}>{d.fields.pharmacy}</label>

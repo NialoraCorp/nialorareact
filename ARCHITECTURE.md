@@ -18,7 +18,7 @@ index.html (SEO meta, JSON-LD, fontlar)
             │   ├─ Niacinamide altın bölüm + içerik şeridi
             │   ├─ Film       tam ekran video (masaüstü yatay+ses, mobil dikey kurgu) + kısa film şeridi
             │   ├─ Buy        ön yüz tüp + kanal cümlesi + Trendyol CTA
-            │   ├─ Dealer     eczane bayilik: düğme → modal form (portal) → Formsubmit AJAX → e-posta
+            │   ├─ Dealer     eczane bayilik: düğme → modal form (portal) → Web3Forms → e-posta
             │   └─ Faq        "Sıkça sorulanlar" akordeonu (kullanım, uyarı, INCI…)
             ├─ <Footer>
             ├─ <ScrollStar>   scroll ile dönen altın yıldız (ilerleme imzası)
@@ -106,10 +106,11 @@ Gri stüdyo zeminli fotoğraflar (arka yüz, koni) kesime uygun değil ve şu an
 ## Bayilik formu
 Sunucu kodu yok; `Dealer.tsx` düğmeyle `document.body`'ye portal edilen bir modal açar (kararan arka plan, Esc /
 arka plan tıklaması / X ile kapanır, açıkken `html` overflow kilitli). Form JSON olarak `DEALER.endpoint`'e
-(Formsubmit AJAX) POST eder, servis e-postayı
-`DEALER.email`'e iletir (`_subject`, `_replyto`, `_template: table`). Spam için gizli `_honey` alanı; zorunlu alanlar
-tarayıcı doğrulamasıyla (`reportValidity`). Hata durumunda `mailto:` yedeği gösterilir. İlk gönderimde Formsubmit
-alıcıya aktivasyon maili yollar; aktivasyon sonrası verilen takma ad endpoint'e yazılarak adres gizlenebilir.
+(Web3Forms, `api.web3forms.com/submit`) POST eder: `access_key` (`DEALER.accessKey`), `subject`, `from_name`,
+`replyto` ve etiketleri e-postada başlık olan alanlar. Servis başvuruyu anahtarın alındığı adrese iletir; alıcı adres
+kodda yer almaz. Cevap `{success, message}`; `success` true değilse ya da 20 sn'de cevap gelmezse hata durumu
+gösterilir, sebep konsola yazılır. Spam için gizli `botcheck` alanı; zorunlu alanlar tarayıcı doğrulamasıyla
+(`reportValidity`). Web3Forms API'si tarayıcı dışından (curl) gelen istekleri Cloudflare ile engeller; test tarayıcıdan.
 
 ## SEO
 `index.html`: TR meta, OG/Twitter, JSON-LD (Organization, WebSite, Product+Offer 450 TRY, gtin13).

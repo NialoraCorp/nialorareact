@@ -39,14 +39,15 @@ export const PRODUCT = {
 } as const
 
 /**
- * Eczane bayilik formu. Site statik olduğu için gönderim Formsubmit'in AJAX ucuna gider ve
- * e-posta olarak iletilir. İlk gönderimde alıcı adrese tek seferlik aktivasyon maili gelir;
- * aktivasyondan sonra Formsubmit'in verdiği rastgele takma adı (alias) endpoint'e yazarak
- * e-posta adresini kaynak koddan gizleyebilirsiniz.
+ * Eczane bayilik formu. Site statik olduğu için gönderim Web3Forms'a (api.web3forms.com) gider; servis başvuruyu
+ * Alvion Sağlık'ın adresine e-posta olarak iletir. Alıcı adres kodda yer almaz: `accessKey`, web3forms.com'da o
+ * adres girilerek alınan erişim anahtarıdır ve istemci tarafında kullanılmak üzere tasarlanmıştır (gizli değildir).
+ * Yeni anahtar: https://web3forms.com → "Create Access Key" → anahtar alıcı adrese e-postayla gelir.
  */
 export const DEALER = {
-  email: 'alvionsaglik@gmail.com',
-  endpoint: 'https://formsubmit.co/ajax/alvionsaglik@gmail.com',
+  endpoint: 'https://api.web3forms.com/submit',
+  accessKey: '', // alıcı adresle alınan Web3Forms access key (boşken form hata gösterir)
+  fromName: 'Nialora Bayilik Formu',
 } as const
 
 export const ASSETS = {

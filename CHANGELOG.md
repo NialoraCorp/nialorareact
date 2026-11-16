@@ -3,6 +3,9 @@
 Biçim: [Keep a Changelog](https://keepachangelog.com/tr/1.1.0/). Tarihler ISO (YYYY-MM-DD).
 
 ## [Unreleased]
+- Bayilik formu Formsubmit'ten Web3Forms'a taşındı (`api.web3forms.com/submit`, anahtar `DEALER.accessKey`):
+  aktivasyon adımı yok, alıcı e-posta adresi artık kodda da geçmiyor, gizli alan `botcheck`. Sebep: Formsubmit'in
+  16 Kasım'daki uzun kesintisi.
 - Bayilik formu: Formsubmit'in 200 koduyla döndürdüğü `success:false` cevabı (ör. aktivasyon eksik) artık
   "alındı" değil hata olarak gösterilir, mesaj konsola yazılır; istek 20 sn'de cevap vermezse kesilir.
 - `npm run deploy:ftp` (`scripts/deploy-ftp.py`): dist'i FTPS ile doğrudan Plesk `httpdocs`'a yükler; kimlik

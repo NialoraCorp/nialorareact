@@ -63,7 +63,9 @@ Tüm görünür metin `src/lib/i18n.tsx` sözlüğünde (TR birincil, EN ikincil
   Kurulan bileşenler `src/components/ui/` altına gelir; Tailwind v4 + `cn` hazır.
 
 ## Bayilik formu
-`src/sections/Dealer.tsx` + `DEALER` (`src/content/product.ts`). Alıcı alvionsaglik@gmail.com, Formsubmit AJAX ucu.
+`src/sections/Dealer.tsx` + `DEALER` (`src/content/product.ts`). Gönderim Web3Forms (`api.web3forms.com/submit`);
+anahtar `DEALER.accessKey` (alıcı adresle web3forms.com'dan alınır, istemci tarafı anahtar, gizli değil). Alıcı e-posta
+adresi ne kodda ne sayfada geçer; aktivasyon adımı yok. Web3Forms API'si curl'ü Cloudflare ile engeller: test tarayıcıdan.
 Alan ekler/çıkarırken `i18n.dealer.fields` ve payload anahtarlarını birlikte güncelleyin (anahtarlar e-postada etiket olur).
 
 ## Varlıklar

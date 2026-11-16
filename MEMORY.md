@@ -54,9 +54,10 @@ Koddan türetilemeyen kararlar, bağlam ve açık işler. Yeni bir karar alınd�
 ## Bayilik formu (16 Kasım 2026)
 - Kullanıcı isteği: eczane adı, eczacı adı, e-posta, telefon, talep; alıcı alvionsaglik@gmail.com. **Adres sitede
   gösterilmez**; form bir düğmeyle açılır.
-- Statik site olduğu için Formsubmit (formsubmit.co) AJAX ucu kullanıldı. **İlk gerçek gönderimde alıcı adrese
-  aktivasyon maili gelir; "Activate" tıklanmadan sonraki başvurular iletilmez.** Aktivasyon sonrası Formsubmit'in
-  verdiği alias `DEALER.endpoint`'e yazılırsa e-posta adresi kaynak koddan çıkar.
+- 16 Kasım 2026: Formsubmit (formsubmit.co) bir saatten uzun kesinti yaşadı (zaman aşımı/525), ilk canlı test
+  "Gönderilemedi" ile bitti; kullanıcı kararıyla **Web3Forms'a geçildi** (`api.web3forms.com/submit`, anahtar
+  `DEALER.accessKey`). Aktivasyon adımı yok; anahtar alıcı adresle web3forms.com'dan alınır, istemci tarafı anahtar
+  olduğu için gizli değildir. Alıcı adres artık kodda da geçmez.
 - Alternatif (ileride): ASP.NET 4.8 sunucuda açık; SMTP bilgisi verilirse kendi `.ashx` handler'ı yazılabilir.
 
 ## Açık işler
@@ -78,8 +79,8 @@ Koddan türetilemeyen kararlar, bağlam ve açık işler. Yeni bir karar alınd�
   Plesk'te Pull now → Deploy now. FTP betiği yedek; `.env.deploy` doldurulmadı.
 - Küçük kalanlar: `httpdocs/nialora-site-build.zip` sunucudan silinmeli; Plesk Hosting Settings'te Preferred domain
   www'siz seçilirse www → nialora.com 301 olur (şu an www 200 dönüyor).
-  Bayilik formu: Formsubmit tek seferlik aktivasyon bekliyor (ilk test gönderimi → gelen "Activate Form" maili
-  onaylanır); sonra `DEALER.endpoint` Formsubmit alias'ına çevrilebilir, böylece adres JS paketinde de görünmez.
+  Bayilik formu: Web3Forms anahtarı `DEALER.accessKey`'e yazılıp deploy edilmeli; sonra canlıda bir test başvurusu
+  yapılıp e-postanın (spam dahil) geldiği doğrulanmalı.
 
 ## Kaynaklar
 - Marka belgesi ve görseller: `~/Downloads/nialora/` (PDF + WhatsApp fotoğraf/video dışa aktarımları).
