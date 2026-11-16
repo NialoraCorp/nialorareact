@@ -98,7 +98,19 @@ bu adresi "Just the push event" olarak ekleyin) ya da Manual (Plesk'te "Pull Upd
 Otomatik modda her `npm run deploy` sonrası site dakikalar içinde güncellenir. Plesk ekstra dosyaları silmez;
 `httpdocs` içinde eski `assets/index-*.js` birikirse zararsızdır.
 
-### 7b. Elle (yedek yol)
+### 7b. FTP ile doğrudan (Plesk Git kurmadan)
+Yerel `dist/` içeriğini FTPS ile doğrudan `httpdocs`'a yazar; sunucuda hiçbir kurulum gerekmez.
+```bash
+cp .env.deploy.example .env.deploy   # bir kez; dosya git dışıdır
+npm run deploy:ftp                   # build alır, dist/ → httpdocs (index.html en son yüklenir)
+```
+`.env.deploy` içine Plesk FTP hesabını **kendiniz** yazın (sohbete/commit'e asla girmez): Websites & Domains →
+nialora.com → **FTP Access** (veya Hosting Settings → "System user") → kullanıcı adı ve şifre. `FTP_HOST`
+sunucu IP'si (178.210.168.80), `FTP_DIR=/httpdocs`. `FTP_TLS=1` açık FTPS kullanır; sunucu TLS kabul etmezse
+`FTP_TLS=0` yapın (düz FTP, şifre açık gider; mümkünse Plesk'te FTPS'i açın). Betik eski `bg*.mp4` dosyalarını
+yüklemez ve var olan fazla dosyaları silmez.
+
+### 7c. Elle (yedek yol)
 ```bash
 npm run build
 ```

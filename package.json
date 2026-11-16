@@ -9,7 +9,8 @@
     "lint": "eslint .",
     "preview": "vite preview",
     "build:single": "vite build && node scripts/build-single.mjs",
-    "deploy": "bash scripts/deploy-branch.sh"
+    "deploy": "bash scripts/deploy-branch.sh",
+    "deploy:ftp": "npm run build && python3 scripts/deploy-ftp.py"
   },
   "dependencies": {
     "clsx": "^2.1.1",

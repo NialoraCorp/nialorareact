@@ -15,6 +15,7 @@ npm run lint     # eslint
 npm run preview  # dist/ önizleme
 npm run build:single  # her şeyi gömen tek dosya (nialora.html); hafif videolar için: node scripts/build-single.mjs <dizin> <çıktı>
 npm run deploy        # build → GitHub `deploy` dalı → Plesk Git httpdocs'a çeker (kullanıcı isteyince)
+npm run deploy:ftp    # build → FTPS ile doğrudan httpdocs; kimlik bilgileri yerel `.env.deploy` (git dışı, sohbete yazılmaz)
 ```
 Dev server'ı Claude Code içinde `.claude/launch.json` ("nialora") ile başlatın; Bash ile arka planda çalıştırmayın.
 

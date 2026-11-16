@@ -3,6 +3,8 @@
 Biçim: [Keep a Changelog](https://keepachangelog.com/tr/1.1.0/). Tarihler ISO (YYYY-MM-DD).
 
 ## [Unreleased]
+- `npm run deploy:ftp` (`scripts/deploy-ftp.py`): dist'i FTPS ile doğrudan Plesk `httpdocs`'a yükler; kimlik
+  bilgileri git dışı `.env.deploy` dosyasında (`.env.deploy.example` şablonu), `index.html` en son yüklenir (DEPLOY.md 7b).
 - `npm run deploy` (`scripts/deploy-branch.sh`): build çıktısını GitHub `deploy` dalına yayınlar; Plesk Git bu dalı
   `httpdocs`'a çeker (DEPLOY.md 7a). Elle zip yükleme yedek yol olarak kalır.
 - Niasinamid bölümündeki kayan şeritten "mika & kalay oksit ışıltısı" (EN: mica & tin oxide shimmer) çıkarıldı.

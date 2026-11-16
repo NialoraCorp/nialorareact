@@ -25,3 +25,7 @@ dist-ssr
 
 # Claude Code: keep skills & launch config tracked, ignore personal local settings
 .claude/settings.local.json
+
+# FTP deploy kimlik bilgileri (yerel)
+.env.deploy
+__pycache__/
