@@ -13,8 +13,8 @@ import { Button } from '@/components/ui/Button'
 type Status = 'idle' | 'sending' | 'sent' | 'error'
 
 const field =
-  'w-full border-b border-plum/25 bg-transparent py-3 text-[15px] text-plum placeholder:text-plum/35 transition-colors duration-300 focus:border-gold focus:outline-none'
-const label = 'block text-[10.5px] font-semibold uppercase tracking-[0.28em] text-plum/55'
+  'w-full border-b border-plum/35 bg-transparent py-3 text-[16px] font-medium text-plum placeholder:font-normal placeholder:text-plum/45 transition-colors duration-300 focus:border-gold focus:outline-none'
+const label = 'block text-[12px] font-bold uppercase tracking-[0.24em] text-plum/85'
 
 /**
  * Eczane bayilik başvurusu. Düğme bir modal açar (arka plan kararır); gönderim Formsubmit
@@ -168,7 +168,7 @@ function DealerModal({
 
             {status === 'sent' ? (
               <div className="mt-6" role="status">
-                <p className="max-w-[44ch] text-[15px] leading-[1.7] text-mauve">{d.sent.text}</p>
+                <p className="max-w-[44ch] text-[16px] font-medium leading-[1.7] text-plum/80">{d.sent.text}</p>
                 <div className="mt-8">
                   <Button onClick={onClose} icon={false}>{t.a11y.close}</Button>
                 </div>
@@ -195,19 +195,19 @@ function DealerModal({
                 </div>
                 <div className="sm:col-span-2">
                   <label htmlFor="dealer-city" className={label}>
-                    {d.fields.city} <span className="normal-case tracking-normal text-plum/40">· {d.optional}</span>
+                    {d.fields.city} <span className="font-medium normal-case tracking-normal text-plum/55">· {d.optional}</span>
                   </label>
                   <input id="dealer-city" name="city" autoComplete="address-level2" placeholder={d.placeholders.city} className={field} />
                 </div>
                 <div className="sm:col-span-2">
                   <label htmlFor="dealer-message" className={label}>
-                    {d.fields.message} <span className="normal-case tracking-normal text-plum/40">· {d.optional}</span>
+                    {d.fields.message} <span className="font-medium normal-case tracking-normal text-plum/55">· {d.optional}</span>
                   </label>
                   <textarea id="dealer-message" name="message" rows={3} placeholder={d.placeholders.message} className={`${field} resize-y`} />
                 </div>
 
-                <label className="flex items-start gap-3 text-[13px] leading-[1.6] text-mauve sm:col-span-2">
-                  <input type="checkbox" required className="mt-1 size-4 shrink-0 accent-[#8f6d22]" />
+                <label className="flex items-start gap-3 text-[14px] font-medium leading-[1.6] text-plum/85 sm:col-span-2">
+                  <input type="checkbox" required className="mt-1 size-[18px] shrink-0 accent-[#8f6d22]" />
                   <span>{d.consent}</span>
                 </label>
 
@@ -216,7 +216,7 @@ function DealerModal({
                     {status === 'sending' ? d.sending : d.submit}
                   </Button>
                   {status === 'error' && (
-                    <p className="text-[13px] leading-[1.6] text-rose-deep" role="alert">
+                    <p className="text-[14px] font-medium leading-[1.6] text-rose-deep" role="alert">
                       <span className="font-semibold">{d.error.title}</span> {d.error.text}
                     </p>
                   )}
