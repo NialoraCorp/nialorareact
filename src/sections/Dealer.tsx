@@ -1,5 +1,7 @@
 import { useEffect, useRef, useState, type FormEvent } from 'react'
+import { createPortal } from 'react-dom'
 import { AnimatePresence, motion } from 'framer-motion'
+import { X } from 'lucide-react'
 import { useI18n } from '@/lib/i18n'
 import { DEALER } from '@/content/product'
 import { useSectionTheme } from '@/lib/useNavTheme'
@@ -15,21 +17,23 @@ const field =
 const label = 'block text-[10.5px] font-semibold uppercase tracking-[0.28em] text-plum/55'
 
 /**
- * Eczane bayilik başvurusu. Düğmeye basılınca form açılır; gönderim Formsubmit AJAX ucu
- * üzerinden DEALER.email'e e-posta olarak gider. Adres sayfada gösterilmez.
+ * Eczane bayilik başvurusu. Düğme bir modal açar (arka plan kararır); gönderim Formsubmit
+ * AJAX ucu üzerinden DEALER.email'e e-posta olarak gider. Adres sayfada gösterilmez.
  */
 export function Dealer() {
   const { t } = useI18n()
   const ref = useRef<HTMLElement>(null)
-  const firstField = useRef<HTMLInputElement>(null)
+  const triggerRef = useRef<HTMLDivElement>(null)
   useSectionTheme(ref, 'light')
   const [open, setOpen] = useState(false)
   const [status, setStatus] = useState<Status>('idle')
   const d = t.dealer
 
-  useEffect(() => {
-    if (open) window.setTimeout(() => firstField.current?.focus({ preventScroll: true }), 650)
-  }, [open])
+  const close = () => {
+    setOpen(false)
+    if (status !== 'sending') setStatus((s) => (s === 'sent' ? 'idle' : s))
+    window.setTimeout(() => triggerRef.current?.querySelector('button')?.focus({ preventScroll: true }), 50)
+  }
 
   async function onSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault()
@@ -67,59 +71,110 @@ export function Dealer() {
 
   return (
     <section id="bayilik" ref={ref} className="bg-pearl px-[clamp(20px,5vw,72px)] py-[clamp(96px,14vh,180px)]">
-      <div className="mx-auto max-w-[1200px]">
-        <div className="grid gap-10 md:grid-cols-[1fr_0.9fr] md:items-end md:gap-20">
-          <div>
-            <Reveal as="p" variant="fade" className="eyebrow">{d.eyebrow}</Reveal>
-            <SplitText as="h2" text={d.line} className="statement mt-5 max-w-[12ch] text-plum" />
-          </div>
-          <div>
-            <Reveal as="p" delay={0.15} className="max-w-[36ch] font-display text-[clamp(20px,2vw,28px)] italic leading-[1.35] text-plum/75">
-              {d.lead}
-            </Reveal>
-            <AnimatePresence initial={false}>
-              {!open && status !== 'sent' && (
-                <motion.div
-                  key="open"
-                  className="mt-8"
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  exit={{ opacity: 0, transition: { duration: 0.25 } }}
-                >
-                  <Button onClick={() => setOpen(true)} aria-expanded={open} aria-controls="dealer-form">
-                    {d.open}
-                  </Button>
-                </motion.div>
-              )}
-            </AnimatePresence>
-          </div>
+      <div className="mx-auto grid max-w-[1200px] gap-10 md:grid-cols-[1fr_0.9fr] md:items-end md:gap-20">
+        <div>
+          <Reveal as="p" variant="fade" className="eyebrow">{d.eyebrow}</Reveal>
+          <SplitText as="h2" text={d.line} className="statement mt-5 max-w-[12ch] text-plum" />
         </div>
+        <div>
+          <Reveal as="p" delay={0.15} className="max-w-[36ch] font-display text-[clamp(20px,2vw,28px)] italic leading-[1.35] text-plum/75">
+            {d.lead}
+          </Reveal>
+          <Reveal delay={0.25} className="mt-8">
+            <div ref={triggerRef}>
+              <Button onClick={() => setOpen(true)} aria-expanded={open} aria-controls="dealer-dialog">
+                {d.open}
+              </Button>
+            </div>
+          </Reveal>
+        </div>
+      </div>
 
-        <AnimatePresence initial={false} mode="wait">
-          {status === 'sent' ? (
-            <motion.div
-              key="sent"
-              initial={{ opacity: 0, y: 16 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.7, ease: EASE }}
-              className="mt-14 border-t border-gold/40 pt-8"
-              role="status"
+      <DealerModal open={open} onClose={close} status={status} onSubmit={onSubmit} />
+    </section>
+  )
+}
+
+function DealerModal({
+  open,
+  onClose,
+  status,
+  onSubmit,
+}: {
+  open: boolean
+  onClose: () => void
+  status: Status
+  onSubmit: (e: FormEvent<HTMLFormElement>) => void
+}) {
+  const { t } = useI18n()
+  const d = t.dealer
+  const firstField = useRef<HTMLInputElement>(null)
+
+  // Esc ile kapat, açıkken sayfa kaydırmasını kilitle, ilk alana odaklan
+  useEffect(() => {
+    if (!open) return
+    const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape') onClose() }
+    window.addEventListener('keydown', onKey)
+    const html = document.documentElement
+    const prev = html.style.overflow
+    html.style.overflow = 'hidden'
+    const id = window.setTimeout(() => firstField.current?.focus({ preventScroll: true }), 450)
+    return () => {
+      window.removeEventListener('keydown', onKey)
+      html.style.overflow = prev
+      window.clearTimeout(id)
+    }
+  }, [open, onClose])
+
+  if (typeof document === 'undefined') return null
+
+  return createPortal(
+    <AnimatePresence>
+      {open && (
+        <motion.div
+          key="dealer-overlay"
+          className="fixed inset-0 z-[85] grid place-items-center overflow-y-auto bg-plum/70 p-4 backdrop-blur-sm sm:p-8"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.4 }}
+          onMouseDown={(e) => { if (e.target === e.currentTarget) onClose() }}
+          data-lenis-prevent
+        >
+          <motion.div
+            id="dealer-dialog"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="dealer-title"
+            className="relative my-auto w-full max-w-[780px] rounded-[1.5rem] bg-ivory p-7 shadow-[0_40px_120px_-30px_rgba(0,0,0,0.55)] sm:p-10 md:p-12"
+            initial={{ opacity: 0, y: 24, scale: 0.98 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: 16, scale: 0.98 }}
+            transition={{ duration: 0.55, ease: EASE }}
+          >
+            <button
+              type="button"
+              onClick={onClose}
+              aria-label={t.a11y.close}
+              className="absolute right-4 top-4 grid size-10 place-items-center rounded-full border border-plum/20 text-plum transition-colors hover:bg-plum hover:text-ivory sm:right-6 sm:top-6"
             >
-              <p className="statement-sm text-plum">{d.sent.title}</p>
-              <p className="mt-4 max-w-[40ch] text-[15px] leading-[1.7] text-mauve">{d.sent.text}</p>
-            </motion.div>
-          ) : open ? (
-            <motion.div
-              key="form"
-              id="dealer-form"
-              initial={{ height: 0, opacity: 0 }}
-              animate={{ height: 'auto', opacity: 1 }}
-              exit={{ height: 0, opacity: 0 }}
-              transition={{ duration: 0.8, ease: EASE }}
-              className="overflow-hidden"
-            >
-              <form onSubmit={onSubmit} className="mt-14 grid gap-8 border-t border-gold/40 pt-10 sm:grid-cols-2">
+              <X className="size-[18px]" strokeWidth={1.5} />
+            </button>
+
+            <p className="eyebrow">{d.eyebrow}</p>
+            <h3 id="dealer-title" className="statement-sm mt-3 pr-12 text-plum">
+              {status === 'sent' ? d.sent.title : d.open}
+            </h3>
+
+            {status === 'sent' ? (
+              <div className="mt-6" role="status">
+                <p className="max-w-[44ch] text-[15px] leading-[1.7] text-mauve">{d.sent.text}</p>
+                <div className="mt-8">
+                  <Button onClick={onClose} icon={false}>{t.a11y.close}</Button>
+                </div>
+              </div>
+            ) : (
+              <form onSubmit={onSubmit} className="mt-8 grid gap-7 sm:grid-cols-2">
                 <input type="text" name="_honey" tabIndex={-1} autoComplete="off" className="hidden" aria-hidden />
 
                 <div>
@@ -167,10 +222,11 @@ export function Dealer() {
                   )}
                 </div>
               </form>
-            </motion.div>
-          ) : null}
-        </AnimatePresence>
-      </div>
-    </section>
+            )}
+          </motion.div>
+        </motion.div>
+      )}
+    </AnimatePresence>,
+    document.body,
   )
 }

@@ -18,7 +18,7 @@ index.html (SEO meta, JSON-LD, fontlar)
             │   ├─ Niacinamide altın bölüm + içerik şeridi
             │   ├─ Film       tam ekran video (masaüstü yatay+ses, mobil dikey kurgu) + kısa film şeridi
             │   ├─ Buy        ön yüz tüp + kanal cümlesi + Trendyol CTA
-            │   ├─ Dealer     eczane bayilik formu → Formsubmit AJAX → e-posta
+            │   ├─ Dealer     eczane bayilik: düğme → modal form (portal) → Formsubmit AJAX → e-posta
             │   └─ Faq        "Sıkça sorulanlar" akordeonu (kullanım, uyarı, INCI…)
             ├─ <Footer>
             ├─ <ScrollStar>   scroll ile dönen altın yıldız (ilerleme imzası)
@@ -104,7 +104,9 @@ ffmpeg -f lavfi -i "color=c=0xF7ECEA:s=1200x630" -i public/brand/tube-front.jpg 
 Gri stüdyo zeminli fotoğraflar (arka yüz, koni) kesime uygun değil ve şu an kullanılmıyor (`public/brand/` içinde duruyor).
 
 ## Bayilik formu
-Sunucu kodu yok; `Dealer.tsx` formu JSON olarak `DEALER.endpoint`'e (Formsubmit AJAX) POST eder, servis e-postayı
+Sunucu kodu yok; `Dealer.tsx` düğmeyle `document.body`'ye portal edilen bir modal açar (kararan arka plan, Esc /
+arka plan tıklaması / X ile kapanır, açıkken `html` overflow kilitli). Form JSON olarak `DEALER.endpoint`'e
+(Formsubmit AJAX) POST eder, servis e-postayı
 `DEALER.email`'e iletir (`_subject`, `_replyto`, `_template: table`). Spam için gizli `_honey` alanı; zorunlu alanlar
 tarayıcı doğrulamasıyla (`reportValidity`). Hata durumunda `mailto:` yedeği gösterilir. İlk gönderimde Formsubmit
 alıcıya aktivasyon maili yollar; aktivasyon sonrası verilen takma ad endpoint'e yazılarak adres gizlenebilir.
