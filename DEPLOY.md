@@ -90,13 +90,17 @@ Build çıktısı GitHub'daki `deploy` dalında tutulur; Plesk bu dalı `httpdoc
 ```bash
 npm run deploy      # build alır, dist/ içeriğini origin/deploy dalına yazar
 ```
-**Bir kerelik Plesk kurulumu:** Websites & Domains → nialora.com → **Git** → Add Repository →
-"Remote Git hosting like GitHub" → Repository URL `https://github.com/NialoraCorp/nialorareact.git`
-(depo herkese açık, anahtar gerekmez) → **Branch: `deploy`** → Deployment path `/httpdocs` →
-Deployment mode: **Automatic** (Plesk bir webhook adresi verir; GitHub'da Settings → Webhooks → Add webhook ile
-bu adresi "Just the push event" olarak ekleyin) ya da Manual (Plesk'te "Pull Updates" düğmesi).
-Otomatik modda her `npm run deploy` sonrası site dakikalar içinde güncellenir. Plesk ekstra dosyaları silmez;
-`httpdocs` içinde eski `assets/index-*.js` birikirse zararsızdır.
+**Plesk kurulumu (16 Kasım 2026'da yapıldı):** Websites & Domains → nialora.com → **Git** → Create repository →
+"Remote repository" → Repository URL `https://github.com/NialoraCorp/nialorareact.git` (depo herkese açık, anahtar
+gerekmez) → Deployment mode **Manual** (Automatic seçilirse ilk klonda `main`, yani kaynak kod httpdocs'a yazılır ve
+site bozulur) → Deployment directory `\httpdocs` → Create. Depo sayfasında **Branch** listesinden `deploy` seçilir,
+**Deploy now** ile yayınlanır.
+**Her güncellemede:** `npm run deploy` → Plesk depo sayfasında **Pull now** → **Deploy now**.
+**Elle dokunmamak için (isteğe bağlı):** depo kartındaki ayar simgesi → Deployment mode **Automatic** → oradaki
+Webhook URL'yi GitHub'da Settings → Webhooks → Add webhook'a "Just the push event" olarak ekleyin (Plesk'in
+sertifikası kendinden imzalıysa adresi `http://` yapın). Sonra her `npm run deploy` siteyi kendiliğinden günceller.
+Notlar: Plesk Windows'ta metin dosyalarını CRLF ile yazar, zararsız. Plesk eski dosyaları silmez; `httpdocs` içinde
+eski `assets/index-*.js` birikirse zararsızdır.
 
 ### 7b. FTP ile doğrudan (Plesk Git kurmadan)
 Yerel `dist/` içeriğini FTPS ile doğrudan `httpdocs`'a yazar; sunucuda hiçbir kurulum gerekmez.

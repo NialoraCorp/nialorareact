@@ -73,10 +73,13 @@ Koddan türetilemeyen kararlar, bağlam ve açık işler. Yeni bir karar alınd�
 - Güncelleme yolları: (a) `npm run deploy` → GitHub `deploy` dalı → Plesk Git (bir kerelik kurulum, DEPLOY.md 7a);
   (b) `npm run deploy:ftp` → FTPS ile doğrudan `httpdocs` (kimlik bilgileri yerel `.env.deploy`, git dışı; kullanıcı
   kendisi doldurur, sohbete yazılmaz); yedek: dist zip'i File Manager ile `httpdocs` üzerine çıkarmak.
-  16 Kasım 2026: deploy dalı oluşturuldu, Plesk Git bağlantısı kullanıcı tarafında bekliyor; FTP betiği eklendi,
-  `.env.deploy` henüz doldurulmadı.
+  16 Kasım 2026: Plesk Git bağlandı (nialorareact.git, Branch `deploy`, Manual mod, `\httpdocs`); ilk Deploy now ile
+  canlı site bayilik formlu sürüme geçti ve doğrulandı. Webhook/Automatic kurulmadı: her `npm run deploy` sonrası
+  Plesk'te Pull now → Deploy now. FTP betiği yedek; `.env.deploy` doldurulmadı.
 - Küçük kalanlar: `httpdocs/nialora-site-build.zip` sunucudan silinmeli; Plesk Hosting Settings'te Preferred domain
   www'siz seçilirse www → nialora.com 301 olur (şu an www 200 dönüyor).
+  Bayilik formu: Formsubmit tek seferlik aktivasyon bekliyor (ilk test gönderimi → gelen "Activate Form" maili
+  onaylanır); sonra `DEALER.endpoint` Formsubmit alias'ına çevrilebilir, böylece adres JS paketinde de görünmez.
 
 ## Kaynaklar
 - Marka belgesi ve görseller: `~/Downloads/nialora/` (PDF + WhatsApp fotoğraf/video dışa aktarımları).
